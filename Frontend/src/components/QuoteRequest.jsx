@@ -3,7 +3,7 @@ import React from "react";
 const QuoteRequest = () => {
   return (
     <div
-      className="w-full bg-cover bg-center"
+      className="w-full bg-cover bg-center bg-white"
       style={{ backgroundImage: "url('/Group 982.png')" }}
     >
       <div className="flex flex-col md:flex-row justify-between items-center md:items-start px-4 md:px-8 py-8 md:py-16 ">

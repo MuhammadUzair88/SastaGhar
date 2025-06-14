@@ -2,10 +2,49 @@ import React from "react";
 import Offers from "../components/Offers";
 import HomeAndOutdoor from "../components/HomeAndOutdoor";
 import QuoteRequest from "../components/QuoteRequest";
+import RecommendedCards from "../components/RecommendedCards";
+import ExtraServices from "../components/ExtraServices";
+import SuppliersByRegion from "../components/SuppliersByRegion";
+import NewsletterSection from "../components/NewsletterSection";
+import Footer from "../components/Footer";
+import Gadgets from "../components/Gadgets";
 
 const Home = () => {
+  const recommendedItems = [
+    {
+      title: "T-shirts with multiple colors, for men",
+      price: "$10.30",
+      img: "https://placehold.co/150x171",
+    },
+    {
+      title: "Wireless Bluetooth Headphones",
+      price: "$25.99",
+      img: "https://placehold.co/150x171",
+    },
+    {
+      title: "Casual Shoes for Men",
+      price: "$45.00",
+      img: "https://placehold.co/150x171",
+    },
+    {
+      title: "Stylish Sunglasses",
+      price: "$12.75",
+      img: "https://placehold.co/150x171",
+    },
+    {
+      title: "Smart Watches for All",
+      price: "$29.99",
+      img: "https://placehold.co/150x171",
+    },
+    {
+      title: "Leather Wallet",
+      price: "$18.00",
+      img: "https://placehold.co/150x171",
+    },
+  ];
+
   return (
-    <div className="w-full min-h-screen">
+    <div className="w-full min-h-screen space-y-10 pb-10 bg-gray-100">
       {/* Mobile + Tablet View */}
       <div className="xl:hidden relative w-full">
         <img
@@ -27,9 +66,9 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Desktop View */}
-      <div className="hidden xl:flex justify-center">
-        <div className="w-full px-6 xl:px-14 flex gap-4 shadow bg-white p-4 rounded h-[360px]">
+      {/* Desktop Banner View */}
+      <div className="hidden xl:flex justify-center px-4 md:px-10 xl:px-14">
+        <div className="w-full flex gap-4 shadow bg-white p-4 rounded h-[360px]">
           {/* Left Sidebar */}
           <div className="w-1/4 h-full flex flex-col justify-between">
             <div className="flex flex-col space-y-2">
@@ -102,9 +141,54 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <Offers />
-      <HomeAndOutdoor />
-      <QuoteRequest />
+
+      {/* Offers */}
+      <div className="px-4 md:px-10 xl:px-14">
+        <Offers />
+      </div>
+
+      {/* Home and Outdoor */}
+      <div className="px-4 md:px-10 xl:px-14">
+        <HomeAndOutdoor />
+      </div>
+      <div className="px-4 md:px-10 xl:px-14">
+        <Gadgets />
+      </div>
+
+      {/* Quote Request */}
+      <div className="px-4 md:px-10 xl:px-14">
+        <QuoteRequest />
+      </div>
+
+      {/* Recommended Cards */}
+      <div className="px-4 md:px-10 xl:px-14 ">
+        <h2 className="text-lg md:text-2xl font-semibold mb-6 ">
+          Recommended Cards
+        </h2>
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 justify-items-center">
+          {recommendedItems.map((item, index) => (
+            <RecommendedCards
+              key={index}
+              title={item.title}
+              price={item.price}
+              img={item.img}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Extra Services */}
+      <div className="px-4 md:px-10 xl:px-14">
+        <h2 className="text-lg md:text-2xl font-semibold mb-6">
+          Our extra services
+        </h2>
+        <ExtraServices />
+      </div>
+      <div className="px-4 md:px-10 xl:px-14">
+        <SuppliersByRegion />
+      </div>
+      <NewsletterSection />
+      <Footer />
     </div>
   );
 };

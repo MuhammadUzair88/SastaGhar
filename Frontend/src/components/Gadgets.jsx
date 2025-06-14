@@ -1,6 +1,6 @@
 import React from "react";
 
-const HomeAndOutdoor = () => {
+const Gadgets = () => {
   const categories = [
     {
       title: "Smart watches",
@@ -38,7 +38,7 @@ const HomeAndOutdoor = () => {
     <div className=" bg-white">
       {/* Mobile view */}
       <div className="xl:hidden">
-        <h1 className="text-xl font-semibold p-2">Home and outdoor</h1>
+        <h1 className="text-xl font-semibold p-2">Consumer Electronics</h1>
         <div className="flex overflow-x-auto border divide-x px-4 border-gray-300 divide-gray-300">
           {categories.map((item, index) => (
             <div
@@ -60,15 +60,8 @@ const HomeAndOutdoor = () => {
       {/* Desktop view */}
       <div className="xl:flex hidden  ">
         <div className="relative">
-          <img src="/Group 969.png" className="w-[280px] h-[257px]" alt="" />
-          <div className="absolute top-0 p-4 flex flex-col justify-center gap-2">
-            <h1 className="text-lg font-medium tracking-tighter">
-              Home and <span>outdoor</span>
-            </h1>
-            <button className="px-4 py-2 tracking-tight text-sm bg-white shadow-sm rounded">
-              Source now
-            </button>
-          </div>
+          <img src="/left-side.png" className="w-[280px] h-[257px]" alt="" />
+          <div className="absolute top-0 p-4 flex flex-col justify-center gap-2"></div>
         </div>
 
         <div className="grid grid-cols-4">
@@ -96,4 +89,4 @@ const HomeAndOutdoor = () => {
   );
 };
 
-export default HomeAndOutdoor;
+export default Gadgets;

@@ -20,9 +20,9 @@ const Offers = () => {
   ];
 
   return (
-    <div className="w-full px-4 py-6">
+    <div className="w-full">
       {/* Combined layout on lg */}
-      <div className="flex flex-col gap-4 lg:flex-row lg:border lg:border-[#DEE2E7] lg:rounded-md lg:overflow-hidden">
+      <div className="flex flex-col gap-4 lg:flex-row lg:border lg:border-[#DEE2E7] lg:rounded-md lg:overflow-hidden bg-white">
         {/* Left Side: Deals & Timer */}
         <div className="flex flex-col  gap-4 px-4 py-3 lg:min-w-[220px] lg:border-r lg:border-[#DEE2E7]">
           <div>
