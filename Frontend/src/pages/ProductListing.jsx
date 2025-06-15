@@ -195,13 +195,29 @@ const ProductListing = () => {
           {/* Products */}
           <div className={ gridLayout ? "p-2 grid grid-cols-2 gap-3 sm:grid sm:grid-cols-3 sm:gap-3" : "p-2 space-y-2 sm:space-y-4"}>
   {dummyProducts.map((product) => (
-    <Card key={product.id} className={`w-full flex flex-col sm:flex-row ${gridLayout ? "justify-center items-center sm:items-center sm:justify-center p-2" : "w-full flex flex-row gap-3 sm:gap-4 items-start p-3 sm:p-6 relative rounded-lg shadow-sm bg-white"} relative`}>
-      {/* IMAGE - Left side on all views */}
-      <img
-        src={product.image}
-        alt={product.title}
-        className=" w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 object-cover rounded"
-      />
+    <Card
+      key={product.id}
+      className={`w-full relative rounded-lg shadow-sm bg-white p-2
+        ${gridLayout
+          ? "flex flex-col items-center justify-center"
+          : "flex flex-row gap-3 sm:gap-4 items-start p-3 sm:p-6"}
+      `}
+    >
+     
+      <div
+        className={`${
+          gridLayout
+            ? "flex justify-center items-center w-full"
+            : ""
+        }`}
+      >
+        <img
+          src={product.image}
+          alt={product.title}
+          className={`w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 object-cover rounded`}
+        />
+      </div>
+
 
       {/* CONTENT - Right side */}
       <CardContent className="flex flex-col justify-between space-y-1 sm:w-full ">
@@ -225,7 +241,7 @@ const ProductListing = () => {
         </div>
 
         {/* Hidden on mobile */}
-        <p className="text-xs text-gray-600 hidden sm:block">{product.description}</p>
+        <p className={`text-xs text-gray-600 hidden sm:block ${gridLayout ? "block lg:hidden" : "text-xs text-gray-600 hidden sm:block" } `}>{product.description}</p>
 
         <a href="#" className="text-blue-600 font-semibold text-sm">View details</a>
       </CardContent>
