@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Offers from "../components/Offers";
 import HomeAndOutdoor from "../components/HomeAndOutdoor";
 import QuoteRequest from "../components/QuoteRequest";
@@ -8,40 +8,25 @@ import SuppliersByRegion from "../components/SuppliersByRegion";
 import NewsletterSection from "../components/NewsletterSection";
 import Footer from "../components/Footer";
 import Gadgets from "../components/Gadgets";
-
+import axios from "axios";
 const Home = () => {
-  const recommendedItems = [
-    {
-      title: "T-shirts with multiple colors, for men",
-      price: "$10.30",
-      img: "https://placehold.co/150x171",
-    },
-    {
-      title: "Wireless Bluetooth Headphones",
-      price: "$25.99",
-      img: "https://placehold.co/150x171",
-    },
-    {
-      title: "Casual Shoes for Men",
-      price: "$45.00",
-      img: "https://placehold.co/150x171",
-    },
-    {
-      title: "Stylish Sunglasses",
-      price: "$12.75",
-      img: "https://placehold.co/150x171",
-    },
-    {
-      title: "Smart Watches for All",
-      price: "$29.99",
-      img: "https://placehold.co/150x171",
-    },
-    {
-      title: "Leather Wallet",
-      price: "$18.00",
-      img: "https://placehold.co/150x171",
-    },
-  ];
+  const [recommendedItems, setRecommendedItems] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await axios.get(
+          `${import.meta.env.VITE_BACKENDURL}/api/product/list`
+        );
+        console.log(res.data.products);
+        setRecommendedItems(res.data.products); // assumes res.data is an array
+      } catch (err) {
+        console.error("Failed to load products:", err);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   return (
     <div className="w-full min-h-screen space-y-10 pb-10 bg-gray-100">
@@ -169,9 +154,9 @@ const Home = () => {
           {recommendedItems.map((item, index) => (
             <RecommendedCards
               key={index}
-              title={item.title}
+              name={item.name}
               price={item.price}
-              img={item.img}
+              image={item.image[0]}
             />
           ))}
         </div>

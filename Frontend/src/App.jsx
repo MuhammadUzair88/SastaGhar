@@ -1,14 +1,17 @@
+// App.jsx
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
 import Navbar from "./components/Navbar";
+import ProductListing from "./pages/ProductListing";
+import Home from "./pages/Home";
 
 const App = () => {
   return (
-    <div className="flex flex-col justify-center gap-5 bg-gray-100">
+    <div className="bg-gray-100 min-h-screen">
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/products" element={<ProductListing />} />
       </Routes>
     </div>
   );

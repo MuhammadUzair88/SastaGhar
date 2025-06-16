@@ -5,32 +5,32 @@ const Gadgets = () => {
     {
       title: "Smart watches",
       price: "From USD 19",
-      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3MIyKrEGBKkgYJ2vx8nF_sKhVOy-bFg8zfw&s",
+      img: "https://placehold.co/200x200",
     },
     {
       title: "Soft chairs",
       price: "From USD 19",
-      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnlMh-VQdsdzvvOJQPDHiQEsFGI7_pM_doLg&s",
+      img: "https://placehold.co/200x200",
     },
     {
       title: "Kitchen utensils",
       price: "From USD 19",
-      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS29A-RhFcvTq7-f9z1pnnkOJm2Oy33mjG9Dg&s",
+      img: "https://placehold.co/200x200",
     },
     {
       title: "Blenders",
       price: "From USD 19",
-      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRu3omwzSHdTYMQ31zMfA_Y79GSuFcGdNGzJg&s",
+      img: "https://placehold.co/200x200",
     },
     {
       title: "Home appliance",
       price: "From USD 19",
-      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXzQZ6RDJtB7AiNYv5nMRU9kWRkGpW7pTVug&s",
+      img: "https://placehold.co/200x200",
     },
     {
       title: "Coffee maker",
       price: "From USD 19",
-      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxPhz6oCZkVre_-MLF9D7Sef_NFPaNlaRp4w&s",
+      img: "https://placehold.co/200x200",
     },
   ];
 

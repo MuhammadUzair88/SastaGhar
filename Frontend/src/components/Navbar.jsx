@@ -9,9 +9,23 @@ import {
 } from "react-icons/fa";
 import { IoMenuSharp } from "react-icons/io5";
 import { ImCross } from "react-icons/im";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All category");
+  const navigate = useNavigate();
+
+  const handleSearch = () => {
+    const categoryParam =
+      selectedCategory !== "All category" ? selectedCategory : "";
+    navigate(
+      `/products?search=${encodeURIComponent(
+        searchQuery
+      )}&category=${encodeURIComponent(categoryParam)}`
+    );
+  };
 
   return (
     <div className="bg-white shadow-md w-full z-50">
@@ -29,15 +43,79 @@ const Navbar = () => {
             <input
               type="text"
               placeholder="Search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full px-3 py-2 outline-none"
             />
-            <select className="px-3 border-l border-blue-500 outline-none">
-              <option>All category</option>
-              <option>Electronics</option>
-              <option>Clothes</option>
-              <option>Books</option>
+            <select
+              className="px-3 border-l border-blue-500 outline-none"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
+              <option value="">Select Category</option>
+
+              {/* Fashion */}
+              <option value="Men Clothing">Men Clothing</option>
+              <option value="Women Clothing">Women Clothing</option>
+              <option value="Kids Clothing">Kids Clothing</option>
+              <option value="Shoes">Shoes</option>
+              <option value="Accessories">Accessories</option>
+              <option value="Watches">Watches</option>
+
+              {/* Electronics */}
+              <option value="Mobile Phones">Mobile Phones</option>
+              <option value="Laptops">Laptops</option>
+              <option value="Tablets">Tablets</option>
+              <option value="Cameras">Cameras</option>
+              <option value="Smartwatches">Smartwatches</option>
+              <option value="Headphones">Headphones</option>
+
+              {/* Home & Kitchen */}
+              <option value="Furniture">Furniture</option>
+              <option value="Home Decor">Home Decor</option>
+              <option value="Lighting">Lighting</option>
+              <option value="Cookware">Cookware</option>
+              <option value="Appliances">Appliances</option>
+              <option value="Bedding">Bedding</option>
+
+              {/* Beauty & Personal Care */}
+              <option value="Skincare">Skincare</option>
+              <option value="Haircare">Haircare</option>
+              <option value="Makeup">Makeup</option>
+              <option value="Fragrances">Fragrances</option>
+              <option value="Bath & Body">Bath & Body</option>
+
+              {/* Sports & Outdoors */}
+              <option value="Sportswear">Sportswear</option>
+              <option value="Fitness Equipment">Fitness Equipment</option>
+              <option value="Outdoor Gear">Outdoor Gear</option>
+
+              {/* Baby & Kids */}
+              <option value="Toys">Toys</option>
+              <option value="Baby Care">Baby Care</option>
+              <option value="School Supplies">School Supplies</option>
+
+              {/* Grocery & Food */}
+              <option value="Snacks">Snacks</option>
+              <option value="Beverages">Beverages</option>
+              <option value="Dairy Products">Dairy Products</option>
+              <option value="Packaged Foods">Packaged Foods</option>
+
+              {/* Pet Supplies */}
+              <option value="Pet Food">Pet Food</option>
+              <option value="Pet Accessories">Pet Accessories</option>
+
+              {/* Others */}
+              <option value="Books">Books</option>
+              <option value="Stationery">Stationery</option>
+              <option value="Gifts">Gifts</option>
             </select>
-            <button className="bg-blue-500 text-white px-4 py-2">Search</button>
+            <button
+              className="bg-blue-500 text-white px-4 py-2"
+              onClick={handleSearch}
+            >
+              Search
+            </button>
           </div>
 
           {/* Icons */}
@@ -119,7 +197,10 @@ const Navbar = () => {
           <input
             className="w-full h-10 bg-gray-100 border border-gray-300 rounded-xl pl-10 pr-4 text-lg"
             type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search"
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           />
         </div>
 
@@ -135,7 +216,15 @@ const Navbar = () => {
           ].map((cat) => (
             <button
               key={cat}
-              className="px-4 py-2 bg-gray-100 text-blue-600 rounded-lg whitespace-nowrap text-sm"
+              onClick={() => {
+                setSelectedCategory(cat);
+                navigate(`/products?category=${encodeURIComponent(cat)}`);
+              }}
+              className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap ${
+                selectedCategory === cat
+                  ? "bg-blue-100 text-blue-600"
+                  : "bg-gray-100 text-blue-600"
+              }`}
             >
               {cat}
             </button>
@@ -168,7 +257,6 @@ const Navbar = () => {
                 <FaShoppingCart />
                 Cart
               </li>
-              {/* Add more items as needed */}
             </ul>
           </div>
         )}
