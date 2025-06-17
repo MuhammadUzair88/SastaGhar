@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import { Card, CardContent } from "../components/card";
 import { Star, Heart, LayoutGrid, List } from "lucide-react";
 import { TfiArrowLeft } from "react-icons/tfi";
@@ -59,7 +59,6 @@ const ProductListing = () => {
       </div>
 
       <div className="flex gap-6">
-        {/* Sidebar */}
         <div className="hidden lg:block w-1/4 p-8 bg-white shadow-sm rounded">
           <div className="border border-gray-300 rounded-md p-4">
             <h2 className="font-semibold mb-2">Filters</h2>
@@ -69,9 +68,7 @@ const ProductListing = () => {
           </div>
         </div>
 
-        {/* Main Content */}
         <div className="w-full lg:w-3/4">
-          {/* Top Bar */}
           <div className="p-3 sm:p-6 flex justify-between items-center bg-white rounded-lg mb-4">
             <div className="flex items-center gap-2 text-gray-600">
               <TfiArrowLeft className="hidden sm:block" />
@@ -113,94 +110,6 @@ const ProductListing = () => {
             </div>
           </div>
 
-<<<<<<< HEAD
-          {/* Products */}
-          <div className={ gridLayout ? "p-2 grid grid-cols-2 gap-3 sm:grid sm:grid-cols-3 sm:gap-3" : "p-2 space-y-2 sm:space-y-4"}>
-  {dummyProducts.map((product) => (
-    <Card
-      key={product.id}
-      className={`w-full relative rounded-lg shadow-sm bg-white p-2
-        ${gridLayout
-          ? "flex flex-col items-center justify-center"
-          : "flex flex-row gap-3 sm:gap-4 items-start p-3 sm:p-6"}
-      `}
-    >
-     
-      <div
-        className={`${
-          gridLayout
-            ? "flex justify-center items-center w-full"
-            : ""
-        }`}
-      >
-        <img
-          src={product.image}
-          alt={product.title}
-          className={`w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 object-cover rounded`}
-        />
-      </div>
-
-
-      {/* CONTENT - Right side */}
-      <CardContent className="flex flex-col justify-between space-y-1 sm:w-full ">
-        <h3 className="text-xm font-semibold sm:text-base">{product.title}</h3>
-
-        {/* Price Row */}
-        <div className="flex items-center gap-2 text-sm sm:text-base">
-          <span className="font-bold text-black">{product.price}</span>
-          <span className="line-through text-gray-400 text-xs sm:text-sm">
-            {product.originalPrice}
-          </span>
-        </div>
-
-        {/* Rating + Orders + Shipping */}
-        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs sm:text-sm">
-          <span className="text-yellow-500">
-            ★★★★<span className="text-gray-300">★</span> {product.rating}
-          </span>
-          <span className="text-gray-500">{product.orders} orders</span>
-          <span className="text-green-600">{product.freeShipping && "Free Shipping"}</span>
-        </div>
-
-        {/* Hidden on mobile */}
-        <p className={`text-xs text-gray-600 hidden sm:block ${gridLayout ? "block lg:hidden" : "text-xs text-gray-600 hidden sm:block" } `}>{product.description}</p>
-
-        <a href="#" className="text-blue-600 font-semibold text-sm">View details</a>
-      </CardContent>
-
-      {/* Wishlist Button */}
-      <button
-        onClick={() => toggleWishlist(product.id)}
-        className="absolute top-2  bottom-0 right-1 text-blue-500"
-        title={wishlist.includes(product.id) ? "Remove from wishlist" : "Add to wishlist"}
-      >
-        <Heart className={wishlist.includes(product.id) ? "fill-current" : "stroke-current"} />
-      </button>
-    </Card>
-  ))}
-</div>
-<div className="block md:block">
-<div className="p-4 block sm:hidden">
-  <span className="text-xl font-bold"> You may also like
-  </span>
-</div>
-<div className="block lg:hidden p-4  sm:hidden">
-
-<Swiper spaceBetween={10} slidesPerView={1.5} className="block lg:hidden p-2 px-4 py-6">
-      {[1, 2].map((_, index) => (
-        <SwiperSlide key={index}>
-          <ProductCard
-            image="./images/1.png"
-            price="10.30"
-            title="Solid Backpack"
-            description="blue jeans large size"
-          />
-        </SwiperSlide>
-      ))}
-    </Swiper> 
-    </div>
-=======
-          {/* Product List */}
           <div
             className={
               viewMode === "grid"
@@ -267,15 +176,14 @@ const ProductListing = () => {
                       {product.description.substring(0, 100)}...
                     </p>
                   )}
-                  <a
-                    href="#"
+                  <Link
+                    to={`/product/${product._id}`}
                     className="text-blue-600 font-semibold text-xs sm:text-sm mt-1 inline-block"
                   >
                     View details
-                  </a>
+                  </Link>
                 </CardContent>
 
-                {/* Heart Icon */}
                 <button
                   onClick={() => toggleWishlist(product._id)}
                   className={`absolute text-blue-500 z-10 ${
@@ -293,10 +201,9 @@ const ProductListing = () => {
                 </button>
               </Card>
             ))}
->>>>>>> 478d418 (Ongoing Backend)
           </div>
 
-          {/* Mobile Swiper */}
+          {/* Swiper for mobile */}
           <div className="block lg:hidden mt-8">
             <div className="p-4">
               <span className="text-lg font-bold">You may also like</span>
@@ -317,12 +224,12 @@ const ProductListing = () => {
                           ${product.price}
                         </span>
                       </div>
-                      <a
-                        href="#"
+                      <Link
+                        to={`/product/${product._id}`}
                         className="text-blue-600 font-semibold text-xs mt-1 inline-block"
                       >
                         View details
-                      </a>
+                      </Link>
                     </CardContent>
                   </Card>
                 </SwiperSlide>

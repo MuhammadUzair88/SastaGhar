@@ -10,12 +10,14 @@ import {
 import { IoMenuSharp } from "react-icons/io5";
 import { ImCross } from "react-icons/im";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All category");
   const navigate = useNavigate();
+  const { userInfo } = useAuth();
 
   const handleSearch = () => {
     const categoryParam =
@@ -53,59 +55,42 @@ const Navbar = () => {
               onChange={(e) => setSelectedCategory(e.target.value)}
             >
               <option value="">Select Category</option>
-
-              {/* Fashion */}
+              {/* [Category options — unchanged, you already wrote them] */}
               <option value="Men Clothing">Men Clothing</option>
               <option value="Women Clothing">Women Clothing</option>
               <option value="Kids Clothing">Kids Clothing</option>
               <option value="Shoes">Shoes</option>
               <option value="Accessories">Accessories</option>
               <option value="Watches">Watches</option>
-
-              {/* Electronics */}
               <option value="Mobile Phones">Mobile Phones</option>
               <option value="Laptops">Laptops</option>
               <option value="Tablets">Tablets</option>
               <option value="Cameras">Cameras</option>
               <option value="Smartwatches">Smartwatches</option>
               <option value="Headphones">Headphones</option>
-
-              {/* Home & Kitchen */}
               <option value="Furniture">Furniture</option>
               <option value="Home Decor">Home Decor</option>
               <option value="Lighting">Lighting</option>
               <option value="Cookware">Cookware</option>
               <option value="Appliances">Appliances</option>
               <option value="Bedding">Bedding</option>
-
-              {/* Beauty & Personal Care */}
               <option value="Skincare">Skincare</option>
               <option value="Haircare">Haircare</option>
               <option value="Makeup">Makeup</option>
               <option value="Fragrances">Fragrances</option>
               <option value="Bath & Body">Bath & Body</option>
-
-              {/* Sports & Outdoors */}
               <option value="Sportswear">Sportswear</option>
               <option value="Fitness Equipment">Fitness Equipment</option>
               <option value="Outdoor Gear">Outdoor Gear</option>
-
-              {/* Baby & Kids */}
               <option value="Toys">Toys</option>
               <option value="Baby Care">Baby Care</option>
               <option value="School Supplies">School Supplies</option>
-
-              {/* Grocery & Food */}
               <option value="Snacks">Snacks</option>
               <option value="Beverages">Beverages</option>
               <option value="Dairy Products">Dairy Products</option>
               <option value="Packaged Foods">Packaged Foods</option>
-
-              {/* Pet Supplies */}
               <option value="Pet Food">Pet Food</option>
               <option value="Pet Accessories">Pet Accessories</option>
-
-              {/* Others */}
               <option value="Books">Books</option>
               <option value="Stationery">Stationery</option>
               <option value="Gifts">Gifts</option>
@@ -120,20 +105,35 @@ const Navbar = () => {
 
           {/* Icons */}
           <div className="flex items-center space-x-6 text-gray-600 text-sm">
-            {[
-              { icon: <FaUser className="text-xl" />, label: "Profile" },
-              {
-                icon: <FaRegCommentDots className="text-xl" />,
-                label: "Messages",
-              },
-              { icon: <FaHeart className="text-xl" />, label: "Orders" },
-              { icon: <FaShoppingCart className="text-xl" />, label: "Cart" },
-            ].map((item, idx) => (
-              <div key={idx} className="flex flex-col items-center">
-                {item.icon}
-                <span>{item.label}</span>
+            {userInfo ? (
+              <div
+                onClick={() => navigate("/profile")}
+                className="flex flex-col items-center cursor-pointer"
+              >
+                <FaUser className="text-xl" />
+                <span>Profile</span>
               </div>
-            ))}
+            ) : (
+              <div
+                onClick={() => navigate("/login")}
+                className="flex flex-col items-center cursor-pointer"
+              >
+                <FaUser className="text-xl" />
+                <span>Login</span>
+              </div>
+            )}
+            <div className="flex flex-col items-center cursor-pointer">
+              <FaRegCommentDots className="text-xl" />
+              <span>Messages</span>
+            </div>
+            <div className="flex flex-col items-center cursor-pointer">
+              <FaHeart className="text-xl" />
+              <span>Orders</span>
+            </div>
+            <div className="flex flex-col items-center cursor-pointer">
+              <FaShoppingCart className="text-xl" />
+              <span>Cart</span>
+            </div>
           </div>
         </div>
 
@@ -187,7 +187,17 @@ const Navbar = () => {
           </div>
           <div className="flex items-center gap-4">
             <FaShoppingCart className="text-2xl" />
-            <FaUser className="text-2xl" />
+            {userInfo ? (
+              <FaUser
+                className="text-2xl cursor-pointer"
+                onClick={() => navigate("/profile")}
+              />
+            ) : (
+              <FaUser
+                className="text-2xl cursor-pointer"
+                onClick={() => navigate("/login")}
+              />
+            )}
           </div>
         </div>
 
@@ -249,9 +259,14 @@ const Navbar = () => {
                 <FaHeart />
                 Orders
               </li>
-              <li className="flex items-center gap-2">
+              <li
+                className="flex items-center gap-2 cursor-pointer"
+                onClick={() =>
+                  userInfo ? navigate("/profile") : navigate("/login")
+                }
+              >
                 <FaUser />
-                Profile
+                {userInfo ? "Profile" : "Login"}
               </li>
               <li className="flex items-center gap-2">
                 <FaShoppingCart />
