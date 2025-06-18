@@ -1,3 +1,4 @@
+// server.js
 import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
@@ -8,24 +9,24 @@ import productRouter from './routes/productRoute.js';
 import cartRouter from './routes/cartRoute.js';
 import OrderRouter from './routes/OrderRoute.js';
 
-// App Config
 const app = express();
-const port = process.env.PORT || 4000;
-connectDB()
-connectCloudinary()
 
-// Middlewares
+// DB + Cloudinary
+connectDB();
+connectCloudinary();
+
+// Middleware
 app.use(express.json());
 app.use(cors());
 
-//api endpoints
-app.use('/api/user',userRouter)
-app.use('/api/product',productRouter)
-app.use('/api/cart',cartRouter)
-app.use('/api/orders',OrderRouter)
+// Routes
+app.use('/api/user', userRouter);
+app.use('/api/product', productRouter);
+app.use('/api/cart', cartRouter);
+app.use('/api/orders', OrderRouter);
 
-app.get('/',(req,res)=>{
-    res.send("API WORKING")
-})
+app.get('/', (req, res) => {
+  res.send('API WORKING');
+});
 
-app.listen(port,()=>console.log('server started on PORT : '+ port))
+export default app; // ✅ IMPORTANT: No app.listen
