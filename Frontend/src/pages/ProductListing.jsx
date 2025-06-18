@@ -6,13 +6,15 @@ import { TfiArrowLeft } from "react-icons/tfi";
 import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import { useWishlist } from "../context/WishlistContext";
 
 const ProductListing = () => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [viewMode, setViewMode] = useState("list");
-  const [wishlist, setWishlist] = useState([]);
   const [searchParams] = useSearchParams();
+
+  const { wishlist, toggleWishlist } = useWishlist();
 
   const query = searchParams.get("search") || "";
   const category = searchParams.get("category") || "";
@@ -20,7 +22,9 @@ const ProductListing = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/product/list");
+        const res = await axios.get(
+          `${import.meta.env.VITE_BACKENDURL}/api/product/list`
+        );
         if (res.data.success) {
           setProducts(res.data.products);
         }
@@ -46,12 +50,6 @@ const ProductListing = () => {
     setFilteredProducts(filtered);
   }, [query, category, products]);
 
-  const toggleWishlist = (id) => {
-    setWishlist((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-    );
-  };
-
   return (
     <div className="p-0 sm:p-8 bg-gray-100 min-h-screen">
       <div className="text-sm text-gray-400 mb-4 hidden sm:block">
@@ -59,6 +57,7 @@ const ProductListing = () => {
       </div>
 
       <div className="flex gap-6">
+        {/* Sidebar */}
         <div className="hidden lg:block w-1/4 p-8 bg-white shadow-sm rounded">
           <div className="border border-gray-300 rounded-md p-4">
             <h2 className="font-semibold mb-2">Filters</h2>
@@ -68,6 +67,7 @@ const ProductListing = () => {
           </div>
         </div>
 
+        {/* Main Section */}
         <div className="w-full lg:w-3/4">
           <div className="p-3 sm:p-6 flex justify-between items-center bg-white rounded-lg mb-4">
             <div className="flex items-center gap-2 text-gray-600">
@@ -110,6 +110,7 @@ const ProductListing = () => {
             </div>
           </div>
 
+          {/* Products Grid/List */}
           <div
             className={
               viewMode === "grid"
@@ -184,8 +185,9 @@ const ProductListing = () => {
                   </Link>
                 </CardContent>
 
+                {/* Wishlist Icon */}
                 <button
-                  onClick={() => toggleWishlist(product._id)}
+                  onClick={() => toggleWishlist(product)}
                   className={`absolute text-blue-500 z-10 ${
                     viewMode === "grid" ? "bottom-25 right-3" : "top-3 right-3"
                   }`}
@@ -193,7 +195,7 @@ const ProductListing = () => {
                   <Heart
                     size={18}
                     className={
-                      wishlist.includes(product._id)
+                      wishlist.find((item) => item._id === product._id)
                         ? "fill-current text-red-500"
                         : "stroke-current"
                     }
@@ -203,7 +205,7 @@ const ProductListing = () => {
             ))}
           </div>
 
-          {/* Swiper for mobile */}
+          {/* Mobile Swiper */}
           <div className="block lg:hidden mt-8">
             <div className="p-4">
               <span className="text-lg font-bold">You may also like</span>

@@ -9,8 +9,9 @@ import {
 } from "react-icons/fa";
 import { IoMenuSharp } from "react-icons/io5";
 import { ImCross } from "react-icons/im";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useCart } from "../context/CartContext";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -18,6 +19,8 @@ const Navbar = () => {
   const [selectedCategory, setSelectedCategory] = useState("All category");
   const navigate = useNavigate();
   const { userInfo } = useAuth();
+  const { getTotalItems } = useCart();
+  const totalItems = getTotalItems();
 
   const handleSearch = () => {
     const categoryParam =
@@ -35,11 +38,12 @@ const Navbar = () => {
       <div className="hidden lg:flex flex-col">
         <div className="flex items-center justify-between p-4 px-8">
           {/* Brand */}
-          <div className="flex items-center space-x-2">
-            <FaShoppingBag className="text-[#8CB7F5] text-2xl" />
-            <span className="text-[#8CB7F5] text-xl font-bold">Brand</span>
-          </div>
-
+          <Link to={"/"}>
+            <div className="flex items-center space-x-2">
+              <FaShoppingBag className="text-[#8CB7F5] text-2xl" />
+              <span className="text-[#8CB7F5] text-xl font-bold">Brand</span>
+            </div>
+          </Link>
           {/* Search Bar */}
           <div className="flex w-1/2 border border-blue-500 rounded-md overflow-hidden">
             <input
@@ -55,7 +59,6 @@ const Navbar = () => {
               onChange={(e) => setSelectedCategory(e.target.value)}
             >
               <option value="">Select Category</option>
-              {/* [Category options — unchanged, you already wrote them] */}
               <option value="Men Clothing">Men Clothing</option>
               <option value="Women Clothing">Women Clothing</option>
               <option value="Kids Clothing">Kids Clothing</option>
@@ -126,14 +129,23 @@ const Navbar = () => {
               <FaRegCommentDots className="text-xl" />
               <span>Messages</span>
             </div>
-            <div className="flex flex-col items-center cursor-pointer">
-              <FaHeart className="text-xl" />
-              <span>Orders</span>
-            </div>
-            <div className="flex flex-col items-center cursor-pointer">
-              <FaShoppingCart className="text-xl" />
-              <span>Cart</span>
-            </div>
+            <Link to={"/orderlist"}>
+              <div className="flex flex-col items-center cursor-pointer">
+                <FaHeart className="text-xl" />
+                <span>Orders</span>
+              </div>
+            </Link>
+            <Link to={"/cart"}>
+              <div className="relative flex flex-col items-center cursor-pointer">
+                {totalItems > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1.5 rounded-full">
+                    {totalItems}
+                  </span>
+                )}
+                <FaShoppingCart className="text-xl" />
+                <span>Cart</span>
+              </div>
+            </Link>
           </div>
         </div>
 
@@ -180,13 +192,24 @@ const Navbar = () => {
             <button onClick={() => setIsMobileMenuOpen(true)}>
               <IoMenuSharp className="text-2xl" />
             </button>
-            <div className="flex items-center gap-2">
-              <FaShoppingBag className="text-[#8CB7F5] text-3xl" />
-              <span className="text-[#8CB7F5] text-2xl font-bold">Brand</span>
-            </div>
+            <Link to={"/"}>
+              <div className="flex items-center gap-2">
+                <FaShoppingBag className="text-[#8CB7F5] text-3xl" />
+                <span className="text-[#8CB7F5] text-2xl font-bold">Brand</span>
+              </div>
+            </Link>
           </div>
-          <div className="flex items-center gap-4">
-            <FaShoppingCart className="text-2xl" />
+          <div className="flex items-center gap-4 relative">
+            <Link to={"/cart"}>
+              <div className="relative">
+                {totalItems > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1.5 rounded-full">
+                    {totalItems}
+                  </span>
+                )}
+                <FaShoppingCart className="text-2xl" />
+              </div>
+            </Link>
             {userInfo ? (
               <FaUser
                 className="text-2xl cursor-pointer"

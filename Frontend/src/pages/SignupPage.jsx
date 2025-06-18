@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "react-hot-toast";
 
@@ -72,6 +72,12 @@ const SignupPage = () => {
         >
           {loading ? "Signing up..." : "Sign Up"}
         </button>
+        <p className="text-sm text-center mt-4">
+          Already have an account?{" "}
+          <Link to="/login" className="text-green-600 hover:underline">
+            Login
+          </Link>
+        </p>
       </form>
     </div>
   );

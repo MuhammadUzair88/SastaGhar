@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 import Offers from "../components/Offers";
 import HomeAndOutdoor from "../components/HomeAndOutdoor";
 import QuoteRequest from "../components/QuoteRequest";
@@ -8,9 +11,21 @@ import SuppliersByRegion from "../components/SuppliersByRegion";
 import NewsletterSection from "../components/NewsletterSection";
 import Footer from "../components/Footer";
 import Gadgets from "../components/Gadgets";
-import axios from "axios";
+
 const Home = () => {
   const [recommendedItems, setRecommendedItems] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const navigate = useNavigate();
+
+  const categories = [
+    "Automobiles",
+    "Clothes and wear",
+    "Home interiors",
+    "Computer and tech",
+    "Tools, equipments",
+    "Sports and outdoor",
+    "Animal and pets",
+  ];
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -18,8 +33,7 @@ const Home = () => {
         const res = await axios.get(
           `${import.meta.env.VITE_BACKENDURL}/api/product/list`
         );
-        console.log(res.data.products);
-        setRecommendedItems(res.data.products); // assumes res.data is an array
+        setRecommendedItems(res.data.products);
       } catch (err) {
         console.error("Failed to load products:", err);
       }
@@ -29,7 +43,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="w-full min-h-screen space-y-10 pb-10 bg-gray-100">
+    <div className="w-full min-h-screen space-y-10 pb-10 bg-gray-100 mt-4">
       {/* Mobile + Tablet View */}
       <div className="xl:hidden relative w-full">
         <img
@@ -45,7 +59,10 @@ const Home = () => {
           <div className="text-white text-xl md:text-2xl font-semibold">
             Electronic items
           </div>
-          <button className="bg-white text-blue-600 text-sm font-medium px-4 py-1 rounded shadow mt-2 w-fit">
+          <button
+            className="bg-white text-blue-600 text-sm font-medium px-4 py-1 rounded shadow mt-2 w-fit"
+            onClick={() => navigate(`/products?category=Electronics`)}
+          >
             Learn more
           </button>
         </div>
@@ -54,24 +71,20 @@ const Home = () => {
       {/* Desktop Banner View */}
       <div className="hidden xl:flex justify-center px-4 md:px-10 xl:px-14">
         <div className="w-full flex gap-4 shadow bg-white p-4 rounded h-[360px]">
-          {/* Left Sidebar */}
+          {/* Left Sidebar Categories */}
           <div className="w-1/4 h-full flex flex-col justify-between">
             <div className="flex flex-col space-y-2">
-              {[
-                "Automobiles",
-                "Clothes and wear",
-                "Home interiors",
-                "Computer and tech",
-                "Tools, equipments",
-                "Sports and outdoor",
-                "Animal and pets",
-              ].map((item, index) => (
+              {categories.map((item, index) => (
                 <button
                   key={index}
-                  className={`w-full text-left px-4 py-2 rounded ${
-                    index === 0
-                      ? "bg-blue-100 text-blue-600 font-semibold"
-                      : "hover:bg-gray-100"
+                  onClick={() => {
+                    setSelectedCategory(item);
+                    navigate(`/products?category=${encodeURIComponent(item)}`);
+                  }}
+                  className={`w-full text-left px-4 py-2 rounded transition duration-200 ${
+                    selectedCategory === item
+                      ? "bg-blue-100 text-blue-700 font-semibold"
+                      : "hover:bg-gray-200"
                   }`}
                 >
                   {item}
@@ -80,7 +93,7 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Middle Banner */}
+          {/* Center Banner */}
           <div className="w-1/2 h-full relative rounded-md flex items-center justify-center">
             <img
               src="/Mask group.png"
@@ -92,7 +105,10 @@ const Home = () => {
                 Latest trending{" "}
                 <span className="font-bold">Electronic items</span>
               </h1>
-              <button className="mt-4 bg-white text-[#0D6EFD] shadow w-[120px] h-[35px] rounded">
+              <button
+                className="mt-4 bg-white text-[#0D6EFD] shadow w-[120px] h-[35px] rounded"
+                onClick={() => navigate(`/products?category=Electronics`)}
+              >
                 Learn more
               </button>
             </div>
@@ -136,6 +152,8 @@ const Home = () => {
       <div className="px-4 md:px-10 xl:px-14">
         <HomeAndOutdoor />
       </div>
+
+      {/* Gadgets */}
       <div className="px-4 md:px-10 xl:px-14">
         <Gadgets />
       </div>
@@ -146,8 +164,8 @@ const Home = () => {
       </div>
 
       {/* Recommended Cards */}
-      <div className="px-4 md:px-10 xl:px-14 ">
-        <h2 className="text-lg md:text-2xl font-semibold mb-6 ">
+      <div className="px-4 md:px-10 xl:px-14">
+        <h2 className="text-lg md:text-2xl font-semibold mb-6">
           Recommended Cards
         </h2>
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 justify-items-center">
@@ -169,9 +187,13 @@ const Home = () => {
         </h2>
         <ExtraServices />
       </div>
+
+      {/* Suppliers by Region */}
       <div className="px-4 md:px-10 xl:px-14">
         <SuppliersByRegion />
       </div>
+
+      {/* Newsletter & Footer */}
       <NewsletterSection />
       <Footer />
     </div>

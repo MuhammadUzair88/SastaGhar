@@ -173,6 +173,13 @@ const Add = () => {
             <option value="Books">Books</option>
             <option value="Stationery">Stationery</option>
             <option value="Gifts">Gifts</option>
+            <option value="Automobiles">Automobiles</option>
+            <option value="Clothes and wear">Clothes and wear</option>
+            <option value="Home interiors">Home interiors</option>
+            <option value="Computer and tech">Computer and tech</option>
+            <option value="Tools, equipments">Tools, equipments</option>
+            <option value="Sports and outdoor">Sports and outdoor</option>
+            <option value="Animal and pets">Animal and pets</option>
           </select>
         </div>
         <div>

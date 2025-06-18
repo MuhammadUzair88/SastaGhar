@@ -16,7 +16,7 @@ const OrderPage = () => {
     const fetchProduct = async () => {
       try {
         const res = await axios.post(
-          "http://localhost:4000/api/product/single",
+          `${import.meta.env.VITE_BACKENDURL}/api/product/single`,
           {
             productId: id,
           }
@@ -78,10 +78,7 @@ const OrderPage = () => {
       </div>
 
       <div className="py-2">
-        <RelatedProductsDesktop
-          currentProductId={id}
-          category={product.category}
-        />
+        <RelatedProductsDesktop />
       </div>
     </div>
   );

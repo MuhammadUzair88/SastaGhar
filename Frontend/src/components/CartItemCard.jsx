@@ -1,15 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const CartItemCard = (props) => {
-  const { title, size, color, material, seller, price, quantity, image } = props;
-  const [quantitys, setQuantity] = useState(2); // local quantity for mobile
+const CartItemCard = ({
+  id,
+  title,
+  size,
+  color,
+  material,
+  seller,
+  price,
+  quantity,
+  image,
+  onQuantityChange,
+  onRemove,
+}) => {
+  const [localQty, setLocalQty] = useState(quantity);
+
+  // Sync with global quantity
+  useEffect(() => {
+    setLocalQty(quantity);
+  }, [quantity]);
 
   const decrement = () => {
-    if (quantitys > 1) setQuantity(prev => prev - 1);
+    if (localQty > 1) {
+      const newQty = localQty - 1;
+      setLocalQty(newQty);
+      onQuantityChange(newQty);
+    }
   };
 
   const increment = () => {
-    setQuantity(prev => prev + 1);
+    const newQty = localQty + 1;
+    setLocalQty(newQty);
+    onQuantityChange(newQty);
+  };
+
+  const handleDesktopQtyChange = (e) => {
+    const newQty = parseInt(e.target.value);
+    setLocalQty(newQty);
+    onQuantityChange(newQty);
   };
 
   return (
@@ -19,7 +47,6 @@ const CartItemCard = (props) => {
         alt={title}
         className="w-16 h-16 object-cover rounded border border-gray-100 shadow"
       />
-
       <div className="flex-1">
         <p className="font-semibold text-sm">{title}</p>
         <p className="text-xs text-gray-500">
@@ -27,7 +54,7 @@ const CartItemCard = (props) => {
         </p>
         <p className="text-xs text-gray-500 mb-1">Seller: {seller}</p>
 
-        {/* ✅ Mobile quantity selector under description */}
+        {/* Mobile quantity */}
         <div className="block md:hidden mb-2">
           <div className="flex items-center border border-gray-300 rounded-md overflow-hidden w-28 h-10">
             <button
@@ -37,7 +64,7 @@ const CartItemCard = (props) => {
               −
             </button>
             <div className="w-1/3 text-center text-lg font-medium">
-              {quantitys}
+              {localQty}
             </div>
             <button
               onClick={increment}
@@ -50,7 +77,10 @@ const CartItemCard = (props) => {
 
         <div className="flex justify-between mt-2 items-center">
           <div className="flex gap-3">
-            <button className="hidden md:block text-red-500 text-xs hover:underline bg-white border border-gray-200 rounded p-1">
+            <button
+              onClick={onRemove}
+              className="hidden md:block text-red-500 text-xs hover:underline bg-white border border-gray-200 rounded p-1"
+            >
               Remove
             </button>
             <button className="hidden md:block text-blue-500 text-xs hover:underline bg-white border border-gray-200 rounded p-1">
@@ -60,8 +90,8 @@ const CartItemCard = (props) => {
 
           <select
             className="hidden md:block border border-gray-200 shadow text-xs px-2 py-1 rounded"
-            value={quantity}
-            onChange={() => {}} // optional: handle changes
+            value={localQty}
+            onChange={handleDesktopQtyChange}
           >
             {Array.from({ length: 10 }).map((_, i) => (
               <option key={i + 1} value={i + 1}>

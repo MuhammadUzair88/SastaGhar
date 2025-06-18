@@ -7,6 +7,7 @@ import SideBar from "./components/SideBar";
 import List from "./pages/List";
 import Login from "./pages/Login"; // Make sure this exists
 import { useAuth } from "./context/AuthContext";
+import AdminOrderList from "./pages/AdminOrderList";
 
 const App = () => {
   const { token } = useAuth();
@@ -28,6 +29,7 @@ const App = () => {
                 <Routes>
                   <Route path="/add" element={<Add />} />
                   <Route path="/list" element={<List />} />
+                  <Route path="/orders" element={<AdminOrderList />} />
                 </Routes>
               </div>
             }
