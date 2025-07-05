@@ -1,82 +1,56 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Offers = () => {
-  const products = [
-    {
-      title: "Smart Watches",
-      img: "/watches.jpeg",
-      discount: "-25%",
-    },
-    {
-      title: "Headphones",
-      img: "/headphones.jpeg",
-      discount: "-25%",
-    },
-    {
-      title: "Macbook",
-      img: "/mac.jpeg",
-      discount: "-25%",
-    },
-    {
-      title: "Book",
-      img: "/book.jpeg",
-      discount: "-25%",
-    },
-    {
-      title: "clothes",
-      img: "/cloths.jpeg",
-      discount: "-25%",
-    },
+  const navigate = useNavigate();
+
+  const categories = [
+    { title: "Women & Men Clothes", img: "/cloths.jpeg" },
+    { title: "Shoes", img: "/Shoes.jpg" },
+    { title: "Cosmetics & Beauty", img: "/Cosmetics.jpg" },
+    { title: "Mobile & Accessories", img: "/mobile.jpg" },
+    { title: "Kitchenware", img: "/Khichen.jpg" },
+    { title: "Babies & Toys", img: "/Toys.jpg" },
+    { title: "Personal Care Products", img: "/care.jpg" },
+    { title: "Gifts", img: "/gifts.jpg" },
+    { title: "Watches", img: "/watches.jpeg" },
+    { title: "Perfumes", img: "/perfumes.jpg" },
   ];
 
   return (
     <div className="w-full">
       <div className="flex flex-col gap-4 lg:flex-row lg:border lg:border-[#DEE2E7] lg:rounded-md lg:overflow-hidden bg-white">
-        {/* Left Side: Timer */}
+        {/* Left Side: Heading with BG */}
         <div className="flex flex-col gap-4 px-4 py-3 lg:min-w-[220px] lg:border-r lg:border-[#DEE2E7]">
-          <div>
-            <h1 className="font-semibold text-xl text-[#1C1C1C]">
-              Deals and offers
-            </h1>
-            <p className="text-gray-500 text-sm">Electronic equipments</p>
-          </div>
-          <div className="flex items-center gap-2">
-            {[
-              { value: "13", label: "Hour" },
-              { value: "34", label: "Min" },
-              { value: "56", label: "Sec" },
-            ].map((time, index) => (
-              <div
-                key={index}
-                className="px-3 py-1 bg-[#EFF2F4] rounded text-center text-[#8B96A5] text-sm"
-              >
-                <div className="font-semibold">{time.value}</div>
-                <div className="text-xs">{time.label}</div>
-              </div>
-            ))}
-          </div>
+          <div
+            className="w-full h-full bg-cover bg-center text-center flex items-center justify-center py-10 lg:py-0"
+            style={{ backgroundImage: "url('/Category.jpg')" }}
+          ></div>
         </div>
 
-        {/* Right Side: Products */}
+        {/* Right Side: Category Cards */}
         <div className="overflow-x-auto lg:overflow-visible w-full">
-          {/* Mobile scroll (horizontal), Desktop grid */}
-          <div className="flex lg:grid lg:grid-cols-5 divide-x lg:divide-x-0 lg:divide-y divide-[#DEE2E7]">
-            {products.map((product, index) => (
+          <div className="flex gap-3 px-3 pb-4 lg:grid lg:grid-cols-5 lg:gap-0 divide-x lg:divide-x-0 lg:divide-y divide-[#DEE2E7]">
+            {categories.map((category, index) => (
               <div
                 key={index}
-                className="flex-shrink-0 lg:flex-shrink lg:w-full p-4 flex flex-col items-center min-w-[140px] sm:min-w-[160px]"
+                onClick={() =>
+                  navigate(
+                    `/products?search=&category=${encodeURIComponent(
+                      category.title
+                    )}`
+                  )
+                }
+                className="cursor-pointer flex-shrink-0 lg:flex-shrink lg:w-full p-4 flex flex-col items-center min-w-[140px] sm:min-w-[160px] bg-white shadow-md rounded-md lg:shadow-none lg:rounded-none transition hover:bg-gray-50"
               >
                 <img
-                  src={product.img}
-                  alt={product.title}
+                  src={category.img}
+                  alt={category.title}
                   className="w-[90px] h-[90px] object-cover mb-2 rounded"
                 />
-                <h2 className="text-sm font-medium text-[#1C1C1C] text-center mb-1">
-                  {product.title}
+                <h2 className="text-sm font-semibold text-gray-800 text-center mb-1">
+                  {category.title}
                 </h2>
-                <span className="text-[#EB001B] bg-red-200 text-xs px-3 py-1 rounded-full font-semibold">
-                  {product.discount}
-                </span>
               </div>
             ))}
           </div>

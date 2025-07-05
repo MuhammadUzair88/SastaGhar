@@ -7,12 +7,15 @@ import { useAuth } from "../context/AuthContext";
 const Checkout = () => {
   const { cart, products, clearCart } = useCart();
   const { userInfo } = useAuth();
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     name: "",
+    email: "",
+    phoneNo: "",
     address: "",
     paymentMethod: "Cash on Delivery",
   });
-  const navigate = useNavigate();
 
   const cartItems = Object.entries(cart).map(([id, qty]) => {
     const product = products.find((p) => p._id === id);
@@ -21,22 +24,24 @@ const Checkout = () => {
       title: product.name,
       quantity: qty,
       price: product.price,
-      image: product.image[0],
+      image: product.image, // can be string or array
+      onSale: product.onSale || false,
+      salePercentage: product.salePercentage || 0,
+      otherServices: product.otherServices || false,
     };
   });
 
   const totalAmount =
     cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) +
-    10 +
-    14 -
-    60;
+    10 + // shipping
+    14 - // service fee
+    60; // discount
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const userId = userInfo._id; // replace with real user ID
       await axios.post(`${import.meta.env.VITE_BACKENDURL}/api/orders/place`, {
-        userId,
+        userId: userInfo._id,
         ...form,
         items: cartItems,
         totalAmount,
@@ -51,13 +56,31 @@ const Checkout = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-xl mx-auto bg-white p-6 rounded-lg shadow space-y-4">
-        <h2 className="text-xl font-semibold">Checkout</h2>
+        <h2 className="text-2xl font-semibold text-center text-gray-800">
+          Checkout
+        </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
             placeholder="Your Name"
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
+            className="w-full px-4 py-2 border rounded"
+            required
+          />
+          <input
+            type="email"
+            placeholder="Your Email"
+            value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+            className="w-full px-4 py-2 border rounded"
+            required
+          />
+          <input
+            type="tel"
+            placeholder="Phone Number"
+            value={form.phoneNo}
+            onChange={(e) => setForm({ ...form, phoneNo: e.target.value })}
             className="w-full px-4 py-2 border rounded"
             required
           />
@@ -77,6 +100,11 @@ const Checkout = () => {
           >
             <option>Cash on Delivery</option>
           </select>
+
+          <div className="text-gray-700 font-medium">
+            Total: ₨{totalAmount.toLocaleString("en-PK")}
+          </div>
+
           <button
             type="submit"
             className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded"

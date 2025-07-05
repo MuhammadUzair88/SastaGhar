@@ -2,7 +2,6 @@ import { useState } from "react";
 import {
   FaShoppingBag,
   FaUser,
-  FaRegCommentDots,
   FaHeart,
   FaShoppingCart,
   FaSearch,
@@ -17,6 +16,7 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All category");
+  const [showAllCategories, setShowAllCategories] = useState(false);
   const navigate = useNavigate();
   const { userInfo } = useAuth();
   const { getTotalItems } = useCart();
@@ -32,6 +32,19 @@ const Navbar = () => {
     );
   };
 
+  const categories = [
+    "Women & Men Clothes",
+    "Shoes",
+    "Cosmetics & Beauty",
+    "Mobile & Accessories",
+    "Kitchenware",
+    "Babies & Toys",
+    "Personal Care Products",
+    "Gifts",
+    "Watches",
+    "Perfumes",
+  ];
+
   return (
     <div className="bg-white shadow-md w-full z-50">
       {/* Desktop Navbar */}
@@ -44,6 +57,7 @@ const Navbar = () => {
               <span className="text-[#8CB7F5] text-xl font-bold">Brand</span>
             </div>
           </Link>
+
           {/* Search Bar */}
           <div className="flex w-1/2 border border-blue-500 rounded-md overflow-hidden">
             <input
@@ -59,44 +73,11 @@ const Navbar = () => {
               onChange={(e) => setSelectedCategory(e.target.value)}
             >
               <option value="">Select Category</option>
-              <option value="Men Clothing">Men Clothing</option>
-              <option value="Women Clothing">Women Clothing</option>
-              <option value="Kids Clothing">Kids Clothing</option>
-              <option value="Shoes">Shoes</option>
-              <option value="Accessories">Accessories</option>
-              <option value="Watches">Watches</option>
-              <option value="Mobile Phones">Mobile Phones</option>
-              <option value="Laptops">Laptops</option>
-              <option value="Tablets">Tablets</option>
-              <option value="Cameras">Cameras</option>
-              <option value="Smartwatches">Smartwatches</option>
-              <option value="Headphones">Headphones</option>
-              <option value="Furniture">Furniture</option>
-              <option value="Home Decor">Home Decor</option>
-              <option value="Lighting">Lighting</option>
-              <option value="Cookware">Cookware</option>
-              <option value="Appliances">Appliances</option>
-              <option value="Bedding">Bedding</option>
-              <option value="Skincare">Skincare</option>
-              <option value="Haircare">Haircare</option>
-              <option value="Makeup">Makeup</option>
-              <option value="Fragrances">Fragrances</option>
-              <option value="Bath & Body">Bath & Body</option>
-              <option value="Sportswear">Sportswear</option>
-              <option value="Fitness Equipment">Fitness Equipment</option>
-              <option value="Outdoor Gear">Outdoor Gear</option>
-              <option value="Toys">Toys</option>
-              <option value="Baby Care">Baby Care</option>
-              <option value="School Supplies">School Supplies</option>
-              <option value="Snacks">Snacks</option>
-              <option value="Beverages">Beverages</option>
-              <option value="Dairy Products">Dairy Products</option>
-              <option value="Packaged Foods">Packaged Foods</option>
-              <option value="Pet Food">Pet Food</option>
-              <option value="Pet Accessories">Pet Accessories</option>
-              <option value="Books">Books</option>
-              <option value="Stationery">Stationery</option>
-              <option value="Gifts">Gifts</option>
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
             </select>
             <button
               className="bg-blue-500 text-white px-4 py-2"
@@ -108,6 +89,20 @@ const Navbar = () => {
 
           {/* Icons */}
           <div className="flex items-center space-x-6 text-gray-600 text-sm">
+            <button
+              onClick={() => {
+                navigate("/products");
+                setSelectedCategory("All category");
+                setShowAllCategories(false);
+              }}
+              className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap ${
+                selectedCategory === "All category"
+                  ? "bg-blue-100 text-blue-600"
+                  : "bg-gray-100 text-blue-600"
+              }`}
+            >
+              All Products
+            </button>
             {userInfo ? (
               <div
                 onClick={() => navigate("/profile")}
@@ -125,10 +120,6 @@ const Navbar = () => {
                 <span>Login</span>
               </div>
             )}
-            <div className="flex flex-col items-center cursor-pointer">
-              <FaRegCommentDots className="text-xl" />
-              <span>Messages</span>
-            </div>
             <Link to={"/orderlist"}>
               <div className="flex flex-col items-center cursor-pointer">
                 <FaHeart className="text-xl" />
@@ -146,40 +137,6 @@ const Navbar = () => {
                 <span>Cart</span>
               </div>
             </Link>
-          </div>
-        </div>
-
-        {/* Secondary Links */}
-        <div className="border-t border-[#E0E0E0] p-4 px-14 flex justify-between items-center">
-          <div className="flex items-center gap-6 text-sm text-gray-700">
-            <h1 className="flex items-center gap-2">
-              <IoMenuSharp /> All Categories
-            </h1>
-            <h1>Hot Offers</h1>
-            <h1>Gift Boxes</h1>
-            <h1>Projects</h1>
-            <h1>Menu Item</h1>
-            <div>
-              <label htmlFor="help">Help</label>
-              <select name="help" id="help" className="ml-2 outline-none" />
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <label>English, USD</label>
-              <select className="outline-none" />
-            </div>
-            <div className="flex items-center gap-2">
-              <label className="flex items-center gap-2">
-                Ship to
-                <img
-                  className="w-6 h-4 object-cover"
-                  src="https://flagcdn.com/w320/us.png"
-                  alt="flag"
-                />
-              </label>
-              <select className="outline-none" />
-            </div>
           </div>
         </div>
       </div>
@@ -239,30 +196,49 @@ const Navbar = () => {
 
         {/* Category Buttons */}
         <div className="px-4 py-2 flex items-center flex-wrap gap-2">
-          {[
-            "All category",
-            "Gadgets",
-            "Clothes",
-            "Accessories",
-            "Electronics",
-            "Books",
-          ].map((cat) => (
-            <button
-              key={cat}
-              onClick={() => {
-                setSelectedCategory(cat);
-                navigate(`/products?category=${encodeURIComponent(cat)}`);
-              }}
-              className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap ${
-                selectedCategory === cat
-                  ? "bg-blue-100 text-blue-600"
-                  : "bg-gray-100 text-blue-600"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
+          <button
+            onClick={() => {
+              navigate("/products");
+              setSelectedCategory("All category");
+              setShowAllCategories(false);
+            }}
+            className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap ${
+              selectedCategory === "All category"
+                ? "bg-blue-100 text-blue-600"
+                : "bg-gray-100 text-blue-600"
+            }`}
+          >
+            All Products
+          </button>
+          <button
+            onClick={() => setShowAllCategories((prev) => !prev)}
+            className="px-4 py-2 bg-gray-200 rounded-lg text-sm text-blue-600"
+          >
+            {showAllCategories ? "Hide Categories" : "All Categories"}
+          </button>
         </div>
+
+        {showAllCategories && (
+          <div className="px-4 pb-2 flex items-center flex-wrap gap-2">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => {
+                  setSelectedCategory(cat);
+                  setShowAllCategories(false);
+                  navigate(`/products?category=${encodeURIComponent(cat)}`);
+                }}
+                className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap ${
+                  selectedCategory === cat
+                    ? "bg-blue-100 text-blue-600"
+                    : "bg-gray-100 text-blue-600"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* Slide-out Mobile Menu */}
         {isMobileMenuOpen && (
@@ -274,26 +250,35 @@ const Navbar = () => {
               </button>
             </div>
             <ul className="space-y-4 text-gray-700 text-base">
-              <li className="flex items-center gap-2">
-                <FaRegCommentDots />
-                Messages
-              </li>
-              <li className="flex items-center gap-2">
-                <FaHeart />
-                Orders
+              <li>
+                <Link
+                  to="/orderlist"
+                  className="flex items-center gap-2"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <FaHeart />
+                  Orders
+                </Link>
               </li>
               <li
                 className="flex items-center gap-2 cursor-pointer"
-                onClick={() =>
-                  userInfo ? navigate("/profile") : navigate("/login")
-                }
+                onClick={() => {
+                  navigate(userInfo ? "/profile" : "/login");
+                  setIsMobileMenuOpen(false);
+                }}
               >
                 <FaUser />
                 {userInfo ? "Profile" : "Login"}
               </li>
-              <li className="flex items-center gap-2">
-                <FaShoppingCart />
-                Cart
+              <li>
+                <Link
+                  to="/cart"
+                  className="flex items-center gap-2"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <FaShoppingCart />
+                  Cart
+                </Link>
               </li>
             </ul>
           </div>

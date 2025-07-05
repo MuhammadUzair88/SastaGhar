@@ -27,7 +27,10 @@ const AddToCart = () => {
           description: product.description,
           price: product.price,
           quantity,
-          image: product.image[0],
+          image: product.otherServices
+            ? product.image.slice(0, 4) // 4 images if extraservices
+            : product.image[0], // otherwise single image
+          otherServices: product.otherServices,
         };
       })
       .filter(Boolean);
@@ -154,22 +157,6 @@ const AddToCart = () => {
                 <FaCreditCard />
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Saved For Later */}
-        <div className="w-full bg-white shadow rounded-lg p-4">
-          <h3 className="font-medium text-base mb-3">Saved for later</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {savedItems.map((item) => (
-              <SavedItemCard
-                key={item.id}
-                image={item.image}
-                price={item.price}
-                title={item.title}
-                onMoveToCart={() => addToCart(item.id)}
-              />
-            ))}
           </div>
         </div>
       </div>

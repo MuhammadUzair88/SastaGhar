@@ -4,11 +4,19 @@ import productModel from './../models/productModel.js';
 // Add Product Function
 const addProduct = async (req, res) => {
   try {
-    const { name, description, price, category, stock } = req.body;
+    const {
+      name,
+      description,
+      price,
+      category,
+      stock,
+      onSale,
+      salePercentage,
+      otherServices,
+    } = req.body;
 
-    // Handle up to 6 images from req.files (keys: image1, image2, ..., image6)
+    // Handle up to 6 images from req.files (keys: image1 to image6)
     const images = [];
-
     for (let i = 1; i <= 6; i++) {
       const imageFile = req.files[`image${i}`]?.[0];
       if (imageFile) {
@@ -25,6 +33,7 @@ const addProduct = async (req, res) => {
       })
     );
 
+    // Construct product data
     const productData = {
       name,
       description,
@@ -35,10 +44,21 @@ const addProduct = async (req, res) => {
       date: Date.now(),
     };
 
+    // Set onSale and salePercentage only if admin sends it
+    if (onSale === 'true') {
+      productData.onSale = true;
+      productData.salePercentage = Number(salePercentage) || 0;
+    }
+
+    // Set otherServices only if explicitly set to true
+    if (otherServices === 'true') {
+      productData.otherServices = true;
+    }
+
     const product = new productModel(productData);
     await product.save();
 
-    res.json({ success: true, message: "Product Added" });
+    res.json({ success: true, message: "Product Added", product });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: error.message });

@@ -4,12 +4,15 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const Add = () => {
-  const [images, setImages] = useState([null, null, null, null]); // 4 images max
+  const [images, setImages] = useState([null, null, null, null]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("Men");
   const [stock, setStock] = useState("");
+  const [onSale, setOnSale] = useState(false);
+  const [salePercentage, setSalePercentage] = useState("");
+  const [otherServices, setOtherServices] = useState(false);
 
   const handleImageChange = (index, file) => {
     const newImages = [...images];
@@ -26,6 +29,9 @@ const Add = () => {
       formData.append("price", price);
       formData.append("category", category);
       formData.append("stock", stock);
+      formData.append("onSale", onSale);
+      formData.append("salePercentage", onSale ? salePercentage : 0);
+      formData.append("otherServices", otherServices);
 
       images.forEach((img, i) => {
         if (img) {
@@ -46,6 +52,9 @@ const Add = () => {
         setCategory("Men");
         setStock("");
         setImages([null, null, null, null]);
+        setOnSale(false);
+        setSalePercentage("");
+        setOtherServices(false);
       } else {
         toast.error(response.data.message);
       }
@@ -57,17 +66,17 @@ const Add = () => {
 
   return (
     <form
-      className="flex flex-col w-full items-start gap-3"
+      className="flex flex-col w-full items-start gap-4"
       onSubmit={onSubmitHandler}
     >
       {/* Image Uploads */}
       <div>
-        <p className="mb-2">Upload Product Images</p>
+        <p className="mb-2 font-medium">Upload Product Images</p>
         <div className="flex gap-2 flex-wrap">
           {images.map((img, i) => (
             <label htmlFor={`image${i}`} key={i}>
               <img
-                className="w-20 h-20 object-cover border border-gray-300 rounded"
+                className="w-20 h-20 object-cover border border-gray-300 rounded cursor-pointer"
                 src={img ? URL.createObjectURL(img) : assets.upload_area}
                 alt=""
               />
@@ -75,6 +84,7 @@ const Add = () => {
                 type="file"
                 id={`image${i}`}
                 hidden
+                accept="image/*"
                 onChange={(e) => handleImageChange(i, e.target.files[0])}
               />
             </label>
@@ -82,11 +92,11 @@ const Add = () => {
         </div>
       </div>
 
-      {/* Product Name */}
+      {/* Name */}
       <div className="w-full">
-        <p className="mb-2">Product Name</p>
+        <p className="mb-2 font-medium">Product Name</p>
         <input
-          className="w-full max-w-[500px] px-3 py-2"
+          className="w-full max-w-[500px] px-3 py-2 border rounded"
           type="text"
           placeholder="Type here"
           value={name}
@@ -97,108 +107,57 @@ const Add = () => {
 
       {/* Description */}
       <div className="w-full">
-        <p className="mb-2">Product Description</p>
+        <p className="mb-2 font-medium">Product Description</p>
         <textarea
-          className="w-full max-w-[500px] px-3 py-2"
-          placeholder="Write content here"
+          className="w-full max-w-[500px] px-3 py-2 border rounded"
+          placeholder="Write description here"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           required
         />
       </div>
 
-      {/* Category and Price */}
-      <div className="flex flex-col sm:flex-row gap-4 w-full">
-        <div>
-          <p className="mb-2">Category</p>
+      {/* Category, Price, Stock */}
+      <div className="flex flex-col sm:flex-row gap-4 w-full max-w-[700px]">
+        <div className="flex-1">
+          <p className="mb-2 font-medium">Category</p>
           <select
-            className="w-full px-3 py-2"
+            className="w-full px-3 py-2 border rounded"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           >
             <option value="">Select Category</option>
-
-            {/* Fashion */}
-            <option value="Men Clothing">Men Clothing</option>
-            <option value="Women Clothing">Women Clothing</option>
-            <option value="Kids Clothing">Kids Clothing</option>
+            <option value="Women & Men Clothes">Women & Men Clothes</option>
             <option value="Shoes">Shoes</option>
-            <option value="Accessories">Accessories</option>
-            <option value="Watches">Watches</option>
-
-            {/* Electronics */}
-            <option value="Mobile Phones">Mobile Phones</option>
-            <option value="Laptops">Laptops</option>
-            <option value="Tablets">Tablets</option>
-            <option value="Cameras">Cameras</option>
-            <option value="Smartwatches">Smartwatches</option>
-            <option value="Headphones">Headphones</option>
-
-            {/* Home & Kitchen */}
-            <option value="Furniture">Furniture</option>
-            <option value="Home Decor">Home Decor</option>
-            <option value="Lighting">Lighting</option>
-            <option value="Cookware">Cookware</option>
-            <option value="Appliances">Appliances</option>
-            <option value="Bedding">Bedding</option>
-
-            {/* Beauty & Personal Care */}
-            <option value="Skincare">Skincare</option>
-            <option value="Haircare">Haircare</option>
-            <option value="Makeup">Makeup</option>
-            <option value="Fragrances">Fragrances</option>
-            <option value="Bath & Body">Bath & Body</option>
-
-            {/* Sports & Outdoors */}
-            <option value="Sportswear">Sportswear</option>
-            <option value="Fitness Equipment">Fitness Equipment</option>
-            <option value="Outdoor Gear">Outdoor Gear</option>
-
-            {/* Baby & Kids */}
-            <option value="Toys">Toys</option>
-            <option value="Baby Care">Baby Care</option>
-            <option value="School Supplies">School Supplies</option>
-
-            {/* Grocery & Food */}
-            <option value="Snacks">Snacks</option>
-            <option value="Beverages">Beverages</option>
-            <option value="Dairy Products">Dairy Products</option>
-            <option value="Packaged Foods">Packaged Foods</option>
-
-            {/* Pet Supplies */}
-            <option value="Pet Food">Pet Food</option>
-            <option value="Pet Accessories">Pet Accessories</option>
-
-            {/* Others */}
-            <option value="Books">Books</option>
-            <option value="Stationery">Stationery</option>
+            <option value="Cosmetics & Beauty">Cosmetics & Beauty</option>
+            <option value="Mobile & Accessories">Mobile & Accessories</option>
+            <option value="Kitchenware">Kitchenware</option>
+            <option value="Babies & Toys">Babies & Toys</option>
+            <option value="Personal Care Products">
+              Personal Care Products
+            </option>
             <option value="Gifts">Gifts</option>
-            <option value="Automobiles">Automobiles</option>
-            <option value="Clothes and wear">Clothes and wear</option>
-            <option value="Home interiors">Home interiors</option>
-            <option value="Computer and tech">Computer and tech</option>
-            <option value="Tools, equipments">Tools, equipments</option>
-            <option value="Sports and outdoor">Sports and outdoor</option>
-            <option value="Animal and pets">Animal and pets</option>
+            <option value="Watches">Watches</option>
+            <option value="Perfumes">Perfumes</option>
           </select>
         </div>
-        <div>
-          <p className="mb-2">Price</p>
+        <div className="flex-1">
+          <p className="mb-2 font-medium">Price</p>
           <input
-            className="w-full px-3 py-2"
+            className="w-full px-3 py-2 border rounded"
             type="number"
-            placeholder="25"
+            placeholder="e.g. 499"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
             required
           />
         </div>
-        <div>
-          <p className="mb-2">Stock</p>
+        <div className="flex-1">
+          <p className="mb-2 font-medium">Stock</p>
           <input
-            className="w-full px-3 py-2"
+            className="w-full px-3 py-2 border rounded"
             type="number"
-            placeholder="100"
+            placeholder="e.g. 100"
             value={stock}
             onChange={(e) => setStock(e.target.value)}
             required
@@ -206,9 +165,49 @@ const Add = () => {
         </div>
       </div>
 
+      {/* ✅ On Sale Toggle */}
+      <div className="flex items-center gap-2">
+        <input
+          type="checkbox"
+          checked={onSale}
+          onChange={(e) => setOnSale(e.target.checked)}
+        />
+        <label className="font-medium">Add this product on Sale?</label>
+      </div>
+
+      {/* ✅ Sale Percentage */}
+      {onSale && (
+        <div className="w-full max-w-[300px]">
+          <p className="mb-2 font-medium">Sale Percentage (%)</p>
+          <input
+            className="w-full px-3 py-2 border rounded"
+            type="number"
+            placeholder="20"
+            value={salePercentage}
+            onChange={(e) => setSalePercentage(e.target.value)}
+            required
+          />
+        </div>
+      )}
+
+      {/* ✅ Other Services Toggle */}
+      <div className="flex items-center gap-2">
+        <input
+          type="checkbox"
+          checked={otherServices}
+          onChange={(e) => setOtherServices(e.target.checked)}
+        />
+        <label className="font-medium">
+          Add this product to Other Services?
+        </label>
+      </div>
+
       {/* Submit Button */}
-      <button type="submit" className="w-28 py-3 mt-4 bg-black text-white">
-        ADD
+      <button
+        type="submit"
+        className="w-32 py-3 mt-4 bg-black text-white rounded hover:bg-gray-800 transition"
+      >
+        ADD PRODUCT
       </button>
     </form>
   );

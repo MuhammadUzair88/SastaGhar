@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
 import { toast } from "react-toastify";
 
 const List = () => {
@@ -49,7 +48,8 @@ const List = () => {
       <h2 className="text-xl font-semibold mb-4 text-center">
         All Products List
       </h2>
-      {/* Responsive Table */}
+
+      {/* Desktop Table */}
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border rounded-lg shadow-md hidden sm:table">
           <thead className="bg-gray-100 border-b">
@@ -73,13 +73,26 @@ const List = () => {
           </thead>
           <tbody>
             {list.map((product) => (
-              <tr key={product.id} className="border-b">
+              <tr key={product._id} className="border-b">
                 <td className="px-4 py-2">
-                  <img
-                    src={product.image[0]}
-                    alt={product.name}
-                    className="w-10 h-10 object-cover rounded"
-                  />
+                  {product.otherServices ? (
+                    <div className="grid grid-cols-2 gap-1 w-16 h-16">
+                      {product.image.slice(0, 4).map((img, i) => (
+                        <img
+                          key={i}
+                          src={img}
+                          alt={`service-${i}`}
+                          className="w-full h-full object-cover rounded border"
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <img
+                      src={product.image[0]}
+                      alt={product.name}
+                      className="w-10 h-10 object-cover rounded"
+                    />
+                  )}
                 </td>
                 <td className="px-4 py-2 text-sm text-gray-700">
                   {product.name}
@@ -88,7 +101,7 @@ const List = () => {
                   {product.category}
                 </td>
                 <td className="px-4 py-2 text-sm text-gray-700">
-                  {product.price}
+                  ₨{product.price?.toLocaleString("en-PK")}
                 </td>
                 <td className="px-4 py-2">
                   <button
@@ -103,20 +116,34 @@ const List = () => {
           </tbody>
         </table>
       </div>
-      {/* Responsive Cards */}
+
+      {/* Mobile Cards */}
       <div className="block sm:hidden">
         {list.map((product) => (
           <div
-            key={product.id}
+            key={product._id}
             className="flex flex-col bg-white border rounded-lg shadow-md mb-4 p-4"
           >
-            <div className="flex items-center mb-3">
-              <img
-                src={product.image[0]}
-                alt={product.name}
-                className="w-12 h-12 object-cover rounded mr-4"
-              />
-              <h3 className="text-lg font-medium text-gray-700">
+            <div className="flex items-start mb-3">
+              {product.otherServices ? (
+                <div className="grid grid-cols-2 gap-1 w-24 h-24 mr-4">
+                  {product.image.slice(0, 4).map((img, i) => (
+                    <img
+                      key={i}
+                      src={img}
+                      alt={`service-${i}`}
+                      className="w-full h-full object-cover rounded border"
+                    />
+                  ))}
+                </div>
+              ) : (
+                <img
+                  src={product.image[0]}
+                  alt={product.name}
+                  className="w-12 h-12 object-cover rounded mr-4"
+                />
+              )}
+              <h3 className="text-lg font-medium text-gray-700 mt-1">
                 {product.name}
               </h3>
             </div>
@@ -126,7 +153,7 @@ const List = () => {
             </div>
             <div className="flex justify-between text-sm text-gray-600 mb-2">
               <span>Price:</span>
-              <span>{product.price}</span>
+              <span>₨{product.price?.toLocaleString("en-PK")}</span>
             </div>
             <button
               className="self-end text-red-600 hover:text-red-800 font-medium"

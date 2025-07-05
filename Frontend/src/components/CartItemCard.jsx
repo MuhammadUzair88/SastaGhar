@@ -10,12 +10,12 @@ const CartItemCard = ({
   price,
   quantity,
   image,
+  otherServices,
   onQuantityChange,
   onRemove,
 }) => {
   const [localQty, setLocalQty] = useState(quantity);
 
-  // Sync with global quantity
   useEffect(() => {
     setLocalQty(quantity);
   }, [quantity]);
@@ -42,17 +42,33 @@ const CartItemCard = ({
 
   return (
     <div className="flex gap-4 border-b py-4 items-start">
-      <img
-        src={image}
-        alt={title}
-        className="w-16 h-16 object-cover rounded border border-gray-100 shadow"
-      />
+      {Array.isArray(image) ? (
+        // Show 4-image grid for otherServices
+        <div className="grid grid-cols-2 gap-1 w-16 h-16">
+          {image.map((img, index) => (
+            <img
+              key={index}
+              src={img || "/fallback.png"}
+              alt={`${title}-${index}`}
+              className="w-full h-full object-cover rounded border border-gray-100 shadow"
+            />
+          ))}
+        </div>
+      ) : (
+        <img
+          src={image}
+          alt={title}
+          className="w-16 h-16 object-cover rounded border border-gray-100 shadow"
+        />
+      )}
+
       <div className="flex-1">
         <p className="font-semibold text-sm">{title}</p>
-        <p className="text-xs text-gray-500">
-          Size: {size}, Color: {color}, Material: {material}
-        </p>
-        <p className="text-xs text-gray-500 mb-1">Seller: {seller}</p>
+        {otherServices && (
+          <p className="text-[10px] text-green-600 bg-green-100 px-2 inline-block rounded-full mb-1">
+            Extra Services Product
+          </p>
+        )}
 
         {/* Mobile quantity */}
         <div className="block md:hidden mb-2">
@@ -103,7 +119,7 @@ const CartItemCard = ({
       </div>
 
       <p className="font-medium text-sm whitespace-nowrap">
-        ${(price * quantity).toFixed(2)}
+        ₨{(price * quantity).toLocaleString("en-PK")}
       </p>
     </div>
   );

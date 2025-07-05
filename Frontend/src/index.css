@@ -1,1 +1,11 @@
 @import "tailwindcss";
+html,
+body {
+  overflow-x: hidden;
+}
+/* You can place this in index.css or a global style file */
+.slick-prev:before,
+.slick-next:before {
+  color: white; /* or black based on your image */
+  font-size: 30px;
+}

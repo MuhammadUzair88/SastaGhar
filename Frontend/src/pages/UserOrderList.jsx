@@ -1,99 +1,180 @@
+// Full UserOrderList Component with react-hot-toast for Review Submission
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { format } from "date-fns";
-import { useAuth } from "../context/AuthContext"; // adjust if needed
+import { useAuth } from "../context/AuthContext";
+import { toast } from "react-hot-toast";
 
 const UserOrderList = () => {
-  const { userInfo } = useAuth(); // make sure user._id is available
+  const { userInfo } = useAuth();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [expandedOrder, setExpandedOrder] = useState(null);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [reviewOrder, setReviewOrder] = useState(null);
+  const [reason, setReason] = useState("");
+
+  const fetchUserOrders = async () => {
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_BACKENDURL}/api/orders/${userInfo._id}`
+      );
+      if (res.data.success) {
+        setOrders(res.data.orders);
+      }
+    } catch (err) {
+      console.error("Error fetching orders:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchUserOrders = async () => {
-      try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_BACKENDURL}/api/orders/${userInfo._id}`
-        );
-        setOrders(res.data.orders);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching user orders:", error);
-        setLoading(false);
-      }
-    };
-
-    if (userInfo?._id) {
-      fetchUserOrders();
-    }
+    if (userInfo?._id) fetchUserOrders();
   }, [userInfo]);
 
-  if (loading) {
-    return <div className="text-center mt-10 text-lg">Loading orders...</div>;
-  }
+  const toggleOrder = (orderId) => {
+    setExpandedOrder(expandedOrder === orderId ? null : orderId);
+  };
+
+  const getStatusColor = (status) => {
+    switch (status.toLowerCase()) {
+      case "delivered":
+        return "bg-green-100 text-green-800";
+      case "pending":
+        return "bg-yellow-100 text-yellow-800";
+      case "processing":
+        return "bg-blue-100 text-blue-800";
+      case "cancelled":
+        return "bg-red-100 text-red-800";
+      case "shipped":
+        return "bg-purple-100 text-purple-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  const submitReview = async () => {
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKENDURL}/api/reviews`,
+        {
+          orderId: reviewOrder._id,
+          phoneNo: reviewOrder.phoneNo,
+          email: reviewOrder.email,
+          address: reviewOrder.address,
+          reason,
+        }
+      );
+      toast.success("Review submitted successfully!");
+      setShowReviewForm(false);
+      setReviewOrder(null);
+      setReason("");
+    } catch (err) {
+      console.error("Error submitting review:", err);
+      toast.error("Failed to submit review.");
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <h2 className="text-3xl font-bold mb-6 text-gray-800 text-center">
-        My Orders
-      </h2>
-
-      {orders.length === 0 ? (
-        <p className="text-center text-gray-600">
-          You haven't placed any orders yet.
-        </p>
+    <div className="max-w-4xl mx-auto py-10 px-4">
+      <h2 className="text-2xl font-bold text-gray-800 mb-6">My Orders</h2>
+      {loading ? (
+        <p>Loading...</p>
+      ) : orders.length === 0 ? (
+        <p>No orders found.</p>
       ) : (
-        <div className="space-y-8">
+        <div className="space-y-6">
           {orders.map((order) => (
-            <div
-              key={order._id}
-              className="bg-white shadow-md rounded-lg p-6 border border-gray-200"
-            >
-              <div className="mb-4">
-                <h3 className="text-xl font-semibold text-gray-700">
-                  Order ID: {order._id}
-                </h3>
-                <p className="text-sm text-gray-500">
-                  Shipping to: {order.address}
-                </p>
-                <p className="text-sm text-gray-500">
-                  Payment: {order.paymentMethod}
-                </p>
-                <p className="text-sm text-gray-500">
-                  Date:{" "}
-                  {format(new Date(order.createdAt), "dd MMM yyyy, hh:mm a")}
-                </p>
-                <p className="text-sm text-gray-500 font-semibold">
-                  Total: ${order.totalAmount}
-                </p>
+            <div key={order._id} className="bg-white shadow rounded p-4">
+              <div
+                className="flex justify-between items-center cursor-pointer"
+                onClick={() => toggleOrder(order._id)}
+              >
+                <div>
+                  <h3 className="font-bold text-gray-800">
+                    Order #{order._id.slice(0, 8)}
+                  </h3>
+                  <p className="text-sm text-gray-500">
+                    {new Date(order.createdAt).toLocaleDateString()}
+                  </p>
+                </div>
+                <span
+                  className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                    order.status
+                  )}`}
+                >
+                  {order.status}
+                </span>
               </div>
+              {expandedOrder === order._id && (
+                <div className="mt-4 space-y-3">
+                  <p className="text-sm text-gray-600">
+                    <strong>Name:</strong> {order.name}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    <strong>Email:</strong> {order.email}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    <strong>Phone:</strong> {order.phoneNo}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    <strong>Address:</strong> {order.address}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    <strong>Total:</strong> ₨{order.totalAmount}
+                  </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {order.items.map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center gap-4 p-3 border rounded-md shadow-sm"
-                  >
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-20 h-20 object-cover rounded-md"
-                    />
-                    <div>
-                      <h4 className="text-gray-800 font-medium">
-                        {item.title}
-                      </h4>
-                      <p className="text-gray-500 text-sm">
-                        Qty: {item.quantity}
-                      </p>
-                      <p className="text-gray-500 text-sm">
-                        Price: ${item.price}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                  {order.status === "Delivered" && (
+                    <button
+                      className="mt-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                      onClick={() => {
+                        setReviewOrder(order);
+                        setShowReviewForm(true);
+                      }}
+                    >
+                      Request Refund / Submit Feedback
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Review Modal */}
+      {showReviewForm && reviewOrder && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded shadow max-w-md w-full">
+            <h3 className="text-lg font-bold mb-4 text-gray-800">
+              Submit Refund / Feedback
+            </h3>
+            <textarea
+              className="w-full border border-gray-300 rounded p-3 h-24"
+              placeholder="Describe your issue or feedback..."
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+            />
+            <div className="flex justify-end gap-2 mt-4">
+              <button
+                onClick={() => {
+                  setShowReviewForm(false);
+                  setReviewOrder(null);
+                  setReason("");
+                }}
+                className="px-4 py-2 text-gray-600 border rounded hover:bg-gray-100"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={submitReview}
+                className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
