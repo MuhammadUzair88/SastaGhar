@@ -82,7 +82,9 @@ const OrderProductCard = ({ product }) => {
         <div className="pt-4 text-sm text-gray-500 space-y-1">
           <p>100% Original Product</p>
           <p>Cash On Delivery Is Available On This Product</p>
-          <p>Easy Return And Exchange Policy Within 7 Days.</p>
+          <p className="font-semibold text-blue-400">
+            Easy Return And Exchange Policy Within 7 Days.
+          </p>
         </div>
       </div>
     </div>
