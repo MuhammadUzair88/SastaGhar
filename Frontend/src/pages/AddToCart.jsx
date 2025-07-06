@@ -106,9 +106,11 @@ const AddToCart = () => {
               ))}
             </div>
 
-            <button className="mt-4 px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded text-sm transition-colors">
-              Back to shop
-            </button>
+            <Link to={"/"}>
+              <button className="mt-4 px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded text-sm transition-colors">
+                Back to shop
+              </button>
+            </Link>
           </div>
 
           {/* Order Summary */}

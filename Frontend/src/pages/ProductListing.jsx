@@ -7,6 +7,7 @@ import axios from "axios";
 import ExtraServiceCard from "../components/ExtraServiceCard";
 
 const priceRanges = [
+  { label: "₨50 - ₨500", min: 50, max: 500 },
   { label: "₨500 - ₨1000", min: 500, max: 1000 },
   { label: "₨1000 - ₨2000", min: 1000, max: 2000 },
   { label: "₨2000 - ₨5000", min: 2000, max: 5000 },
@@ -139,7 +140,6 @@ const ProductListing = () => {
         <div className="w-full lg:w-3/4">
           <div className="p-3 sm:p-6 flex justify-between items-center bg-white rounded-lg mb-4">
             <div className="flex items-center gap-2 text-gray-600 text-sm sm:text-base">
-              <TfiArrowLeft className="hidden sm:block" />
               <span>
                 {filteredProducts.length} items in{" "}
                 <strong className="font-semibold capitalize">

@@ -1,123 +1,124 @@
 import React from "react";
-import {
-  FaFacebookF,
-  FaTwitter,
-  FaLinkedinIn,
-  FaInstagram,
-  FaYoutube,
-} from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaTiktok, FaWhatsapp } from "react-icons/fa";
+import { Link } from "react-router-dom";
+
+const categories = [
+  "Women & Men Clothes",
+  "Shoes",
+  "Cosmetics & Beauty",
+  "Mobile & Accessories",
+  "Kitchenware",
+  "Babies & Toys",
+  "Personal Care Products",
+  "Gifts",
+  "Watches",
+  "Perfumes",
+];
 
 const Footer = () => {
   return (
-    <footer className="bg-white w-full px-4 sm:px-8 lg:px-16 pt-10 pb-4 text-[16px] relative">
-      <div className="max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8">
-        {/* Logo and description */}
-        <div>
-          <div className="flex items-center gap-2 mb-4">
-            <img
-              src="https://img.icons8.com/fluency/48/shopping-bag.png"
-              alt="Brand Logo"
-              className="w-8 h-8"
-            />
-            <span className="text-blue-600 text-xl font-bold">Brand</span>
-          </div>
-          <p className="text-neutral-600 max-w-[288px] leading-normal">
-            Best information about the company goes here but now lorem ipsum is
+    <footer className="bg-white border-t border-gray-200 pt-12 pb-6 px-4 sm:px-8 lg:px-16 text-gray-700 text-[15px]">
+      <div className="max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-10">
+        {/* Logo + Description */}
+        <div className="col-span-1 lg:col-span-2">
+          <Link to="/" className="inline-block mb-4">
+            <img src="/Logo (2).png" className="w-32" alt="logo" />
+          </Link>
+          <p className="text-gray-600 leading-relaxed max-w-md">
+            Your go-to destination for everyday essentials and exclusive
+            collections. Explore a wide range of categories curated just for
+            you.
           </p>
-          <div className="flex gap-3 mt-6 text-gray-500 text-xl">
-            <FaFacebookF />
-            <FaTwitter />
-            <FaLinkedinIn />
-            <FaInstagram />
-            <FaYoutube />
+          <div className="flex gap-4 mt-6 text-gray-600 text-lg">
+            <a
+              href="https://www.facebook.com/share/16x5CQ22tx/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+              className="hover:text-blue-600"
+            >
+              <FaFacebookF />
+            </a>
+            <a
+              href="https://wa.me/923316309905"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="WhatsApp"
+              className="hover:text-green-600"
+            >
+              <FaWhatsapp />
+            </a>
+            <a
+              href="https://www.instagram.com/sastagharofficial/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              className="hover:text-pink-500"
+            >
+              <FaInstagram />
+            </a>
+            <a
+              href="https://www.tiktok.com/@sasta.ghar?_t=ZS-8xmLiLA4zFH&_r=1"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="TikTok"
+              className="hover:text-black"
+            >
+              <FaTiktok />
+            </a>
           </div>
         </div>
 
-        {/* About */}
+        {/* Navigation */}
         <div>
-          <h4 className="text-zinc-900 font-medium mb-2">About</h4>
-          <ul className="text-gray-400 space-y-1">
-            <li>About Us</li>
-            <li>Find store</li>
-            <li>Categories</li>
-            <li>Blogs</li>
+          <h4 className="text-zinc-900 font-semibold mb-3">Quick Links</h4>
+          <ul className="space-y-2 text-gray-600">
+            <li>
+              <Link to="/products" className="hover:text-blue-600">
+                All Products
+              </Link>
+            </li>
+            <li>
+              <Link to="/orderlist" className="hover:text-blue-600">
+                Orders
+              </Link>
+            </li>
+            <li>
+              <Link to="/cart" className="hover:text-blue-600">
+                Cart
+              </Link>
+            </li>
+            <li>
+              <Link to="/login" className="hover:text-blue-600">
+                Login / Profile
+              </Link>
+            </li>
           </ul>
         </div>
 
-        {/* Partnership */}
-        <div>
-          <h4 className="text-zinc-900 font-medium mb-2">Partnership</h4>
-          <ul className="text-gray-400 space-y-1">
-            <li>About Us</li>
-            <li>Find store</li>
-            <li>Categories</li>
-            <li>Blogs</li>
-          </ul>
-        </div>
-
-        {/* Information */}
-        <div>
-          <h4 className="text-zinc-900 font-medium mb-2">Information</h4>
-          <ul className="text-gray-400 space-y-1">
-            <li>Help Center</li>
-            <li>Money Refund</li>
-            <li>Shipping</li>
-            <li>Contact us</li>
-          </ul>
-        </div>
-
-        {/* For Users */}
-        <div>
-          <h4 className="text-zinc-900 font-medium mb-2">For users</h4>
-          <ul className="text-gray-400 space-y-1">
-            <li>Login</li>
-            <li>Register</li>
-            <li>Settings</li>
-            <li>My Orders</li>
-          </ul>
-
-          <h4 className="text-zinc-900 font-medium mt-6 mb-2">Get app</h4>
-          <div className="space-y-2">
-            <a
-              href="https://www.apple.com/app-store/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Available_on_the_App_Store_%28black%29.png"
-                alt="App Store"
-                className="w-32 h-10 object-contain"
-              />
-            </a>
-            <a
-              href="https://play.google.com/store"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
-                alt="Google Play"
-                className="w-32 h-10 object-contain"
-              />
-            </a>
+        {/* Categories */}
+        <div className="col-span-1 md:col-span-1 lg:col-span-2">
+          <h4 className="text-zinc-900 font-semibold mb-3">Categories</h4>
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-2 text-gray-600 text-sm">
+            {categories.map((cat) => (
+              <Link
+                key={cat}
+                to={`/products?category=${encodeURIComponent(cat)}`}
+                className="hover:underline hover:text-blue-600"
+              >
+                {cat}
+              </Link>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Bottom Section */}
-      <div className="mt-10 border-t border-zinc-200 pt-4 flex flex-col sm:flex-row justify-between items-center text-sm text-zinc-600">
-        <div className="text-center sm:text-left mb-2 sm:mb-0">
-          © 2023 Ecommerce.
-        </div>
-
-        <div className="flex items-center gap-2">
-          <img
-            src="https://flagcdn.com/us.svg"
-            alt="US Flag"
-            className="w-6 h-4"
-          />
-          <span>English</span>
-          <div className="w-3 h-2 bg-zinc-900 ml-2" />
+      {/* Bottom */}
+      <div className="mt-10 pt-4 border-t border-gray-100 text-sm flex flex-col sm:flex-row justify-between items-center text-zinc-500">
+        <div>© {new Date().getFullYear()} Sastaghar. All rights reserved.</div>
+        <div className="mt-2 sm:mt-0 flex items-center gap-2">
+          <span>Language:</span>
+          <span className="text-zinc-800 font-medium">English</span>
         </div>
       </div>
     </footer>

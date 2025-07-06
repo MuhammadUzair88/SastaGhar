@@ -99,9 +99,6 @@ const CartItemCard = ({
             >
               Remove
             </button>
-            <button className="hidden md:block text-blue-500 text-xs hover:underline bg-white border border-gray-200 rounded p-1">
-              Save for later
-            </button>
           </div>
 
           <select

@@ -52,10 +52,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between p-4 px-8">
           {/* Brand */}
           <Link to={"/"}>
-            <div className="flex items-center space-x-2">
-              <FaShoppingBag className="text-[#8CB7F5] text-2xl" />
-              <span className="text-[#8CB7F5] text-xl font-bold">Brand</span>
-            </div>
+            <img src="/Logo (2).png" className="w-32" alt="logo" />
           </Link>
 
           {/* Search Bar */}
@@ -151,8 +148,7 @@ const Navbar = () => {
             </button>
             <Link to={"/"}>
               <div className="flex items-center gap-2">
-                <FaShoppingBag className="text-[#8CB7F5] text-3xl" />
-                <span className="text-[#8CB7F5] text-2xl font-bold">Brand</span>
+                <img src="/Logo (2).png" className="w-20" alt="logo" />
               </div>
             </Link>
           </div>
