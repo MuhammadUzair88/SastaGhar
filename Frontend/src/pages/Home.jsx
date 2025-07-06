@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, lazy, Suspense } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-import Offers from "../components/Offers";
-import RecommendedCards from "../components/RecommendedCards";
-import ExtraServices from "../components/ExtraServices";
-import NewsletterSection from "../components/NewsletterSection";
-import Footer from "../components/Footer";
-
 import Slider from "react-slick";
 import { MoveRight, ChevronLeft, ChevronRight } from "lucide-react";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-// Category data
+// Lazy-loaded components
+const Offers = lazy(() => import("../components/Offers"));
+const RecommendedCards = lazy(() => import("../components/RecommendedCards"));
+const ExtraServices = lazy(() => import("../components/ExtraServices"));
+const NewsletterSection = lazy(() => import("../components/NewsletterSection"));
+const Footer = lazy(() => import("../components/Footer"));
+
+// Categories
 const categories = [
   {
     id: 1,
@@ -53,7 +53,7 @@ const categories = [
   },
 ];
 
-// Custom arrows
+// Arrows
 const NextArrow = ({ onClick }) => (
   <div
     className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 cursor-pointer bg-white/80 p-2 rounded-full hover:bg-white transition"
@@ -102,7 +102,7 @@ const Banner = () => {
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
-                backgroundColor: "#000", // fallback to avoid white flicker
+                backgroundColor: "#000",
               }}
             >
               <div className="absolute inset-0 bg-black/60" />
@@ -143,7 +143,7 @@ const Home = () => {
         const res = await axios.get(
           `${import.meta.env.VITE_BACKENDURL}/api/product/list`
         );
-        setRecommendedItems(res.data.products);
+        setRecommendedItems(res.data.products || []);
       } catch (err) {
         console.error("Failed to load products:", err);
       }
@@ -152,12 +152,20 @@ const Home = () => {
     fetchProducts();
   }, []);
 
+  const filteredRecommendedItems = useMemo(() => {
+    return recommendedItems.filter((item) => !item.otherServices).slice(0, 10);
+  }, [recommendedItems]);
+
   return (
     <div className="w-full min-h-screen space-y-10 pb-10 bg-gray-100 overflow-x-hidden">
       <Banner />
 
       <div className="px-4 md:px-10 xl:px-14">
-        <Offers />
+        <Suspense
+          fallback={<div className="text-center py-6">Loading Offers...</div>}
+        >
+          <Offers />
+        </Suspense>
       </div>
 
       <div className="px-4 md:px-10 xl:px-14">
@@ -165,9 +173,8 @@ const Home = () => {
           Recommended Cards
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 justify-items-center">
-          {recommendedItems
-            .filter((item) => !item.otherServices)
-            .map((item) => (
+          <Suspense fallback={<div>Loading...</div>}>
+            {filteredRecommendedItems.map((item) => (
               <RecommendedCards
                 key={item._id}
                 _id={item._id}
@@ -178,6 +185,7 @@ const Home = () => {
                 salePercentage={item.salePercentage}
               />
             ))}
+          </Suspense>
         </div>
       </div>
 
@@ -185,11 +193,24 @@ const Home = () => {
         <h2 className="text-lg md:text-2xl font-semibold mb-6">
           Our Extra Services
         </h2>
-        <ExtraServices />
+        <Suspense
+          fallback={<div className="text-center py-6">Loading Services...</div>}
+        >
+          <ExtraServices />
+        </Suspense>
       </div>
 
-      <NewsletterSection />
-      <Footer />
+      <Suspense
+        fallback={<div className="text-center py-6">Loading Newsletter...</div>}
+      >
+        <NewsletterSection />
+      </Suspense>
+
+      <Suspense
+        fallback={<div className="text-center py-6">Loading Footer...</div>}
+      >
+        <Footer />
+      </Suspense>
     </div>
   );
 };
