@@ -40,7 +40,7 @@ const Footer = () => {
               <FaFacebookF />
             </a>
             <a
-              href="https://wa.me/923316309905"
+              href="https://wa.me/+923313298525"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp"
