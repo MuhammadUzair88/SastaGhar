@@ -40,7 +40,7 @@ export const CartProvider = ({ children }) => {
         fetchCart();
       }
     } catch (err) {
-      toast.error("Add to cart failed");
+      toast.error("Plz Login First");
     }
   };
 

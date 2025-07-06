@@ -122,21 +122,6 @@ const RelatedProducts = ({ category, productId }) => {
           );
         })}
       </div>
-
-      {/* Discount Banner */}
-      <div className="mt-12 bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-6 sm:p-8 rounded-xl flex flex-col sm:flex-row justify-between items-center shadow-lg">
-        <div className="mb-4 sm:mb-0">
-          <p className="text-xl sm:text-2xl font-bold">
-            Super Discount on Orders Over ₨10000
-          </p>
-          <p className="text-white/80 text-sm sm:text-base">
-            Don’t miss out on amazing deals across categories
-          </p>
-        </div>
-        <button className="bg-orange-500 hover:bg-orange-600 transition-colors px-5 py-2 rounded-md font-medium text-white mt-2 sm:mt-0">
-          Shop Now
-        </button>
-      </div>
     </div>
   );
 };

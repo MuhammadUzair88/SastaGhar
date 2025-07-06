@@ -64,18 +64,6 @@ const AdminOrderList = () => {
     }
   };
 
-  useEffect(() => {
-    fetchOrders();
-  }, []);
-
-  useEffect(() => {
-    let result = orders;
-    if (statusFilter !== "All") {
-      result = result.filter((order) => order.status === statusFilter);
-    }
-    setFilteredOrders(result);
-  }, [statusFilter, orders]);
-
   const handleStatusChange = async (orderId, newStatus) => {
     try {
       await axios.put(
@@ -89,6 +77,20 @@ const AdminOrderList = () => {
     } catch (error) {
       console.error("Failed to update order status:", error);
       toast.error("Failed to update order status.");
+    }
+  };
+
+  const handleDeleteOrder = async (orderId) => {
+    if (!window.confirm("Are you sure you want to delete this order?")) return;
+    try {
+      await axios.delete(
+        `${import.meta.env.VITE_BACKENDURL}/api/orders/${orderId}`
+      );
+      toast.success("Order deleted successfully.");
+      fetchOrders();
+    } catch (error) {
+      console.error("Failed to delete order:", error);
+      toast.error("Failed to delete order.");
     }
   };
 
@@ -137,6 +139,18 @@ const AdminOrderList = () => {
       ))}
     </div>
   );
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  useEffect(() => {
+    let result = orders;
+    if (statusFilter !== "All") {
+      result = result.filter((order) => order.status === statusFilter);
+    }
+    setFilteredOrders(result);
+  }, [statusFilter, orders]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-8">
@@ -261,9 +275,21 @@ const AdminOrderList = () => {
                         </option>
                       ))}
                     </select>
+                    {order.status === "Delivered" && (
+                      <button
+                        onClick={() => handleDeleteOrder(order._id)}
+                        title="Delete this order"
+                        className="text-red-600 hover:text-red-800"
+                      >
+                        <FiX size={18} />
+                      </button>
+                    )}
                   </div>
                 </div>
 
+                {/* Rest of the content stays exactly the same */}
+                {/* Order info, items, and optional review button */}
+                {/* ... */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
                     <h4 className="font-medium text-gray-700 flex items-center gap-2">
