@@ -100,23 +100,23 @@ const AddToCart = () => {
             <div className="text-sm space-y-2">
               <div className="flex justify-between">
                 <span>Subtotal:</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <span>₨{subtotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
                 <span>Discount:</span>
-                <span className="text-red-500">-$60.00</span>
+                <span className="text-red-500">-₨60.00</span>
               </div>
               <div className="flex justify-between">
                 <span>Tax:</span>
-                <span className="text-green-500">+$14.00</span>
+                <span className="text-green-500">+₨14.00</span>
               </div>
               <div className="flex justify-between">
                 <span>Shipping:</span>
-                <span>$10.00</span>
+                <span>₨10.00</span>
               </div>
               <div className="flex justify-between font-bold text-base border-t border-gray-200 pt-2 mt-1">
                 <span>Total:</span>
-                <span>${total.toFixed(2)}</span>
+                <span>₨{total.toFixed(2)}</span>
               </div>
 
               <Link to={"/checkout"}>
