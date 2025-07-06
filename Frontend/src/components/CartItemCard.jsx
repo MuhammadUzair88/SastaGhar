@@ -95,7 +95,7 @@ const CartItemCard = ({
           <div className="flex gap-3">
             <button
               onClick={onRemove}
-              className="hidden md:block text-red-500 text-xs hover:underline bg-white border border-gray-200 rounded p-1"
+              className="text-red-500 text-xs hover:underline bg-white border border-gray-200 rounded p-1"
             >
               Remove
             </button>
