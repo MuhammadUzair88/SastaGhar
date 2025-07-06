@@ -16,16 +16,23 @@ const AddToCart = () => {
         const product = products.find((p) => p._id === productId);
         if (!product) return null;
 
+        const isOnSale = product.onSale;
+        const salePrice = isOnSale
+          ? product.price -
+            (product.price * (product.salePercentage || 0)) / 100
+          : product.price;
+
         return {
           id: product._id,
           title: product.name,
           description: product.description,
-          price: product.price,
+          price: parseFloat(salePrice.toFixed(2)),
           quantity,
           image: product.otherServices
             ? product.image.slice(0, 4)
             : product.image[0],
           otherServices: product.otherServices,
+          onSale: isOnSale,
         };
       })
       .filter(Boolean);
@@ -45,7 +52,6 @@ const AddToCart = () => {
     (sum, item) => sum + item.price * item.quantity,
     0
   );
-  const total = subtotal + 10 + 14 - 60;
 
   return (
     <div className="bg-gray-100 min-h-screen">
@@ -102,21 +108,12 @@ const AddToCart = () => {
                 <span>Subtotal:</span>
                 <span>₨{subtotal.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between">
-                <span>Discount:</span>
-                <span className="text-red-500">-₨60.00</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Tax:</span>
-                <span className="text-green-500">+₨14.00</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Shipping:</span>
-                <span>₨10.00</span>
-              </div>
+
+              {/* Removed: Discount, Tax, Shipping */}
+
               <div className="flex justify-between font-bold text-base border-t border-gray-200 pt-2 mt-1">
                 <span>Total:</span>
-                <span>₨{total.toFixed(2)}</span>
+                <span>₨{subtotal.toFixed(2)}</span>
               </div>
 
               <Link to={"/checkout"}>

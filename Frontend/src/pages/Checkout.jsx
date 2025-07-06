@@ -1,3 +1,4 @@
+// ✅ Checkout.jsx
 import React, { useState } from "react";
 import { useCart } from "../context/CartContext";
 import axios from "axios";
@@ -19,23 +20,27 @@ const Checkout = () => {
 
   const cartItems = Object.entries(cart).map(([id, qty]) => {
     const product = products.find((p) => p._id === id);
+    const basePrice = product.price;
+    const finalPrice = product.onSale
+      ? basePrice - (basePrice * product.salePercentage) / 100
+      : basePrice;
+
     return {
       productId: product._id,
       title: product.name,
       quantity: qty,
-      price: product.price,
-      image: product.image, // can be string or array
+      price: finalPrice,
+      image: product.image,
       onSale: product.onSale || false,
       salePercentage: product.salePercentage || 0,
       otherServices: product.otherServices || false,
     };
   });
 
-  const totalAmount =
-    cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) +
-    10 + // shipping
-    14 - // service fee
-    60; // discount
+  const totalAmount = cartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
