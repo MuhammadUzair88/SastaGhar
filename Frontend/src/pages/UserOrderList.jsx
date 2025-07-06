@@ -1,5 +1,3 @@
-// Full UserOrderList Component with react-hot-toast for Review Submission
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
@@ -87,10 +85,7 @@ const UserOrderList = () => {
         <div className="space-y-6">
           {orders.map((order) => (
             <div key={order._id} className="bg-white shadow rounded p-4">
-              <div
-                className="flex justify-between items-center cursor-pointer"
-                onClick={() => toggleOrder(order._id)}
-              >
+              <div className="flex justify-between items-center">
                 <div>
                   <h3 className="font-bold text-gray-800">
                     Order #{order._id.slice(0, 8)}
@@ -107,6 +102,14 @@ const UserOrderList = () => {
                   {order.status}
                 </span>
               </div>
+
+              <button
+                onClick={() => toggleOrder(order._id)}
+                className="mt-3 text-sm text-blue-600 hover:underline"
+              >
+                {expandedOrder === order._id ? "Hide Order" : "View Your Order"}
+              </button>
+
               {expandedOrder === order._id && (
                 <div className="mt-4 space-y-3">
                   <p className="text-sm text-gray-600">
@@ -124,6 +127,49 @@ const UserOrderList = () => {
                   <p className="text-sm text-gray-600">
                     <strong>Total:</strong> ₨{order.totalAmount}
                   </p>
+
+                  <div className="border-t pt-3 mt-3">
+                    <p className="font-semibold text-gray-700 mb-2">
+                      Products in this order:
+                    </p>
+                    {order.items?.map((item, idx) => (
+                      <div key={idx} className="flex gap-4 items-start mb-3">
+                        {item.otherServices && Array.isArray(item.image) ? (
+                          <div className="grid grid-cols-2 gap-1 w-20 h-20">
+                            {item.image.slice(0, 4).map((img, i) => (
+                              <img
+                                key={i}
+                                src={img}
+                                alt="product"
+                                className="w-full h-full object-cover rounded border"
+                              />
+                            ))}
+                          </div>
+                        ) : (
+                          <img
+                            src={
+                              Array.isArray(item.image)
+                                ? item.image[0]
+                                : item.image
+                            }
+                            alt="product"
+                            className="w-20 h-20 object-cover rounded border"
+                          />
+                        )}
+                        <div>
+                          <p className="text-sm font-medium text-gray-800">
+                            {item.title}
+                          </p>
+                          <p className="text-xs text-gray-600">
+                            Quantity: {item.quantity}
+                          </p>
+                          <p className="text-xs text-gray-600">
+                            Price: ₨{item.price}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
 
                   {order.status === "Delivered" && (
                     <button
