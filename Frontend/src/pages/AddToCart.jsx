@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from "react";
 import CartItemCard from "../components/CartItemCard";
-import SavedItemCard from "../components/SavedItemCard";
-import { FaStripe, FaPaypal, FaCreditCard } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
 const AddToCart = () => {
   const [cartItems, setCartItems] = useState([]);
-  const [savedItems, setSavedItems] = useState([]);
-
-  const { cart, products, updateCart, removeFromCart, clearCart, addToCart } =
-    useCart();
+  const { cart, products, updateCart, removeFromCart, clearCart } = useCart();
 
   useEffect(() => {
     if (!cart || !products) return;
@@ -28,8 +23,8 @@ const AddToCart = () => {
           price: product.price,
           quantity,
           image: product.otherServices
-            ? product.image.slice(0, 4) // 4 images if extraservices
-            : product.image[0], // otherwise single image
+            ? product.image.slice(0, 4)
+            : product.image[0],
           otherServices: product.otherServices,
         };
       })
@@ -37,30 +32,6 @@ const AddToCart = () => {
 
     setCartItems(updatedCartItems);
   }, [cart, products]);
-
-  useEffect(() => {
-    const fetchSavedItems = async () => {
-      try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_BACKENDURL}/api/product/list`
-        );
-        if (res.data && Array.isArray(res.data.products)) {
-          const sliced = res.data.products.slice(0, 5).map((product) => ({
-            id: product._id,
-            image: product.image[0],
-            price: product.price,
-            title: product.name,
-            description: product.description,
-          }));
-          setSavedItems(sliced);
-        }
-      } catch (error) {
-        console.error("Failed to fetch saved items:", error.message);
-      }
-    };
-
-    fetchSavedItems();
-  }, []);
 
   const handleQuantityChange = (id, quantity) => {
     if (quantity < 1) {
@@ -74,7 +45,6 @@ const AddToCart = () => {
     (sum, item) => sum + item.price * item.quantity,
     0
   );
-
   const total = subtotal + 10 + 14 - 60;
 
   return (
@@ -114,7 +84,7 @@ const AddToCart = () => {
           </div>
 
           {/* Order Summary */}
-          <div className="hidden md:block w-1/4 bg-white shadow rounded-lg p-4 h-fit">
+          <div className="w-full md:w-1/4 bg-white shadow rounded-lg p-4 h-fit">
             <p className="text-sm font-medium mb-2">Have a coupon?</p>
             <div className="flex gap-2 mb-3">
               <input
@@ -148,16 +118,12 @@ const AddToCart = () => {
                 <span>Total:</span>
                 <span>${total.toFixed(2)}</span>
               </div>
+
               <Link to={"/checkout"}>
                 <button className="mt-4 w-full bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-md text-sm font-medium">
                   Checkout
                 </button>
               </Link>
-              <div className="mt-3 flex justify-center gap-4 text-2xl text-gray-600">
-                <FaStripe />
-                <FaPaypal />
-                <FaCreditCard />
-              </div>
             </div>
           </div>
         </div>
