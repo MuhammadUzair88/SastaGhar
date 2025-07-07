@@ -43,22 +43,30 @@ const ProductListing = () => {
 
   useEffect(() => {
     let filtered = [...products];
+
     if (query) {
       filtered = filtered.filter((item) =>
         item.name.toLowerCase().includes(query.toLowerCase())
       );
     }
+
     if (category && category !== "All category") {
       filtered = filtered.filter((item) =>
         item.category.toLowerCase().includes(category.toLowerCase())
       );
     }
+
     if (selectedPriceRange) {
-      filtered = filtered.filter(
-        (item) =>
-          item.price >= selectedPriceRange.min &&
-          item.price <= selectedPriceRange.max
-      );
+      filtered = filtered.filter((item) => {
+        const effectivePrice = item.onSale
+          ? item.price - (item.price * (item.salePercentage || 0)) / 100
+          : item.price;
+
+        return (
+          effectivePrice >= selectedPriceRange.min &&
+          effectivePrice <= selectedPriceRange.max
+        );
+      });
     }
 
     setFilteredProducts(filtered);
