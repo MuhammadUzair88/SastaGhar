@@ -17,7 +17,7 @@ const RelatedProducts = ({ category, productId }) => {
         if (res.data.success) {
           const filtered = res.data.products
             .filter((p) => p._id !== productId)
-            .slice(0, 6);
+            .slice(0, 6); // Only 6 related products
           setRelated(filtered);
         }
       } catch (err) {
@@ -53,7 +53,7 @@ const RelatedProducts = ({ category, productId }) => {
             : [product.image[0]];
 
           let imageGridClass = "";
-          if (images.length === 3 || images.length === 2)
+          if (images.length === 2 || images.length === 3)
             imageGridClass = "grid-cols-2";
           if (images.length === 4) imageGridClass = "grid-cols-2 grid-rows-2";
 
@@ -110,7 +110,6 @@ const RelatedProducts = ({ category, productId }) => {
                   )}
                 </div>
 
-                {/* View Button */}
                 <Link
                   to={`/product/${product._id}`}
                   className="inline-block mt-3 bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1 rounded-md transition-all"

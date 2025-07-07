@@ -65,10 +65,17 @@ const addProduct = async (req, res) => {
   }
 };
 
-// List All Products
+// ✅ List All Products (with optional category filtering)
 const listProducts = async (req, res) => {
   try {
-    const products = await productModel.find({});
+    const { category } = req.query;
+
+    const filter = {};
+    if (category) {
+      filter.category = category;
+    }
+
+    const products = await productModel.find(filter);
     res.json({ success: true, products });
   } catch (error) {
     console.error(error);
@@ -98,6 +105,5 @@ const singleProduct = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
 
 export { listProducts, addProduct, removeProduct, singleProduct };
