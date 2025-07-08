@@ -22,7 +22,7 @@ const Footer = () => {
         {/* Logo + Description */}
         <div className="col-span-1 lg:col-span-2">
           <Link to="/" className="inline-block mb-4">
-            <img src="/Logo (2).png" className="w-32" alt="logo" />
+            <img src="/Saab1.png" className="w-32" alt="logo" />
           </Link>
           <p className="text-gray-600 leading-relaxed max-w-md">
             Your go-to destination for everyday essentials and exclusive
@@ -115,7 +115,9 @@ const Footer = () => {
 
       {/* Bottom */}
       <div className="mt-10 pt-4 border-t border-gray-100 text-sm flex flex-col sm:flex-row justify-between items-center text-zinc-500">
-        <div>© {new Date().getFullYear()} Sastaghar. All rights reserved.</div>
+        <div>
+          © {new Date().getFullYear()} SaabKiChoice. All rights reserved.
+        </div>
         <div className="mt-2 sm:mt-0 flex items-center gap-2">
           <span>Language:</span>
           <span className="text-zinc-800 font-medium">English</span>

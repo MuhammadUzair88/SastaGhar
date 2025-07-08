@@ -52,7 +52,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between p-4 px-8">
           {/* Brand */}
           <Link to={"/"}>
-            <img src="/Logo (2).png" className="w-32" alt="logo" />
+            <img src="/Saab1.png" className="w-32" alt="logo" />
           </Link>
 
           {/* Search Bar */}
@@ -148,7 +148,7 @@ const Navbar = () => {
             </button>
             <Link to={"/"}>
               <div className="flex items-center gap-2">
-                <img src="/Logo (2).png" className="w-20" alt="logo" />
+                <img src="/Saab1.png" className="w-20" alt="logo" />
               </div>
             </Link>
           </div>
